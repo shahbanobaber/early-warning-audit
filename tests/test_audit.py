@@ -41,3 +41,26 @@ def test_calibration_reports_observed_minus_predicted():
     assert np.isclose(rows["disability", "none declared"]["under"], 0.25 - 0.25)
     assert np.isclose(rows["all", "everyone"]["observed"], 15 / 40)
     assert np.isclose(rows["all", "everyone"]["predicted"], 0.275)
+
+
+def test_scorecard_counts_course_runs_and_finds_the_gap():
+    from ewaudit.audit import scorecard
+
+    rng = np.random.default_rng(1)
+    n = 400
+    pres = pd.Series(np.repeat(["A 2013J", "B 2013J"], n // 2))
+    quiet = rng.random(n) < 0.3
+    declared = np.arange(n) % 4 == 0
+    # Quiet adds 40 points for most students but only 10 for the declared group.
+    p = np.where(declared, 0.5 + 0.1 * quiet, 0.2 + 0.4 * quiet)
+    y = (rng.random(n) < p).astype(int)
+    X = pd.DataFrame({"last_week_clicks": np.where(quiet, 0.0, 3.0), "missed_frac": np.nan, "forum_any": 1.0,
+                      "quiz_clicks": 1.0, "prestart_clicks": 1.0})
+    G = pd.DataFrame({"deprivation": "0-20%", "education": "A level",
+                      "disability": np.where(declared, "declared", "none declared")})
+    rows, _ = scorecard(G, y, X, pres, rng, n_boot=200)
+    card = {r["trace"]: r for r in rows}
+    quiet_row = card["no activity in the last week"]
+    assert quiet_row["runs"] == 2 and quiet_row["runs_positive"] == 2
+    assert quiet_row["worst_group"].startswith("disability") and quiet_row["worst_gap"] < 0
+    assert "missed an assessment deadline" not in card   # no deadlines due, so it doesn't apply to anyone

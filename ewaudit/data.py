@@ -28,7 +28,8 @@ ACTIVITY = {
 }
 GROUPS = ["content", "forum", "live", "quiz", "homepage"]                  # anything else is content
 
-TEST_PRESENTATION = "2014J"   # the last presentation of every module; train on everything before it
+ORDER = ["2013B", "2013J", "2014B", "2014J"]   # presentations in time order (B starts in February, J in October)
+TEST_PRESENTATION = "2014J"                    # the last one; train on everything before it
 
 
 def download(raw: Path) -> Path:
@@ -62,9 +63,17 @@ def _students(src: Path) -> pd.DataFrame:
     s = s.rename(columns={"module_presentation_length": "length"})
     s["presentation"] = s.code_module + " " + s.code_presentation
     s["at_risk"] = s.final_result.isin(["Fail", "Withdrawn"]).astype(int)
-    s["split"] = np.where(s.code_presentation == TEST_PRESENTATION, "test", "train")
     s.index = pd.RangeIndex(len(s), name="key")
     return s
+
+
+def assign_split(students: pd.DataFrame, test: str) -> pd.DataFrame:
+    """Test on one presentation, train on every earlier one, and set later ones aside."""
+    rank = students.code_presentation.map(ORDER.index)
+    t = ORDER.index(test)
+    out = students.copy()
+    out["split"] = np.select([rank == t, rank < t], ["test", "train"], "later")
+    return out
 
 
 def _daily(src: Path, students: pd.DataFrame, chunk: int = 1_000_000) -> pd.DataFrame:
@@ -83,10 +92,10 @@ def _daily(src: Path, students: pd.DataFrame, chunk: int = 1_000_000) -> pd.Data
     return daily.astype({"key": "int32", "date": "int16", "group": "int8", "clicks": "int32"})
 
 
-def load(raw: Path, cache: Path) -> Data:
+def load(raw: Path, cache: Path, test: str = TEST_PRESENTATION) -> Data:
     """Read everything, building the daily click table on first use and caching it."""
     src = download(raw)
-    students = _students(src)
+    students = assign_split(_students(src), test)
     assess = pd.read_csv(src / "assessments.csv", na_values="?")
     assess = assess[assess.assessment_type != "Exam"].dropna(subset=["date"])
     sub = pd.read_csv(src / "studentAssessment.csv", na_values="?")

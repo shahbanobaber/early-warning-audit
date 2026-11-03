@@ -10,7 +10,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt  # noqa: E402
 import numpy as np  # noqa: E402
 
-from .audit import DIMENSIONS  # noqa: E402
+from .audit import DIMENSIONS, FIGURE_TRACES  # noqa: E402
 
 INK, INK2, MUTED = "#0b0b0b", "#52514e", "#8a8984"
 GRID, SURFACE, NULL = "#e6e5e1", "#fcfcfb", "#dddcd7"
@@ -131,8 +131,8 @@ def _label(dim: str, group: str) -> str:
 def missing_traces(audit: dict, path: Path) -> None:
     """How much the absence of each trace raises the at-risk rate, per group."""
     _style()
-    rows = audit["missing_traces"]
-    traces = list(dict.fromkeys(r["trace"] for r in rows))
+    traces = FIGURE_TRACES
+    rows = [r for r in audit["missing_traces"] if r["trace"] in traces]
     colours = dict(zip(traces, [BLUE, ORANGE], strict=False))
     labels = [(r["dimension"], r["group"]) for r in rows if r["trace"] == traces[0]]
     fig, ax = plt.subplots(figsize=(7.2, 5.0))

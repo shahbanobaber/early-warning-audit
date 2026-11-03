@@ -81,42 +81,109 @@ def _absence_effect(y: np.ndarray, absent: np.ndarray, member: np.ndarray) -> fl
     return y[a].mean() - y[p].mean() if a.any() and p.any() else np.nan
 
 
-def missing_traces(G: pd.DataFrame, y: np.ndarray, X: pd.DataFrame, rng, n_boot: int = 1000) -> list[dict]:
+# Absent traces, each tied to the self-regulation skill it is meant to show.
+# Each entry returns (trace absent, trace applicable) for every student.
+TRACES = {
+    "no activity in the last week": ("regular study (time management)",
+                                     lambda X: (X.last_week_clicks == 0, X.last_week_clicks.notna())),
+    "missed an assessment deadline": ("meeting deadlines (time management)",
+                                      lambda X: (X.missed_frac > 0, X.missed_frac.notna())),
+    "never used the forum": ("help-seeking", lambda X: (X.forum_any == 0, X.forum_any.notna())),
+    "never took a quiz": ("self-testing (monitoring)", lambda X: (X.quiz_clicks == 0, X.quiz_clicks.notna())),
+    "no activity before the start": ("planning", lambda X: (X.prestart_clicks == 0, X.prestart_clicks.notna())),
+}
+FIGURE_TRACES = ["never used the forum", "no activity in the last week"]
+
+
+def _trace(X: pd.DataFrame, name: str) -> tuple[np.ndarray, np.ndarray]:
+    absent, ok = TRACES[name][1](X)
+    return (absent & ok).to_numpy(), ok.to_numpy()
+
+
+def _available(X: pd.DataFrame, traces) -> list[str]:
+    """Traces whose columns exist this week (week 0 has no in-course activity, so some are dropped)."""
+    out = []
+    for t in traces:
+        try:
+            _trace(X, t)
+        except AttributeError:
+            continue
+        out.append(t)
+    return out
+
+
+def missing_traces(G: pd.DataFrame, y: np.ndarray, X: pd.DataFrame, rng, n_boot: int = 1000,
+                   traces=None) -> list[dict]:
     """Does the absence of a trace raise risk by the same amount in every group?
 
     For each absent trace and group: the share without it, the at-risk rate
     with and without it, and the difference. `gap` is that difference minus
     the same difference for everyone else. If it is far from zero, the same
-    silence means something different for this group. Intervals resample
-    students.
+    silence means something different for this group. Only students for whom
+    the trace applies count (no deadline yet means no missed deadline).
+    Intervals resample students.
     """
-    traces = {
-        "never used the forum": X["forum_any"].to_numpy() == 0,
-        "no activity in the last week": X["last_week_clicks"].to_numpy() == 0,
-    }
     rows = []
     y = y.astype(float)
-    for trace, absent in traces.items():
+    for trace in _available(X, traces or TRACES):
+        absent, ok = _trace(X, trace)
+        yt, at = y[ok], absent[ok]
         for dim, (_, order) in DIMENSIONS.items():
-            codes = pd.Categorical(G[dim], categories=order).codes
+            codes = pd.Categorical(G[dim], categories=order).codes[ok]
             for j, name in enumerate(order):
                 m = codes == j
-                if (m & absent).sum() < 10 or (m & ~absent).sum() < 10:
-                    continue
-                eff, other = _absence_effect(y, absent, m), _absence_effect(y, absent, ~m)
+                if min((m & at).sum(), (m & ~at).sum(), (~m & at).sum(), (~m & ~at).sum()) < 10:
+                    continue   # too few on one side, inside the group or in the rest, to compare
+                eff, other = _absence_effect(yt, at, m), _absence_effect(yt, at, ~m)
                 boots = []
                 for _ in range(n_boot):
-                    i = rng.integers(0, len(y), len(y))
-                    e = _absence_effect(y[i], absent[i], m[i])
-                    boots.append((e, e - _absence_effect(y[i], absent[i], ~m[i])))
+                    i = rng.integers(0, len(yt), len(yt))
+                    e = _absence_effect(yt[i], at[i], m[i])
+                    boots.append((e, e - _absence_effect(yt[i], at[i], ~m[i])))
                 with warnings.catch_warnings():
                     warnings.simplefilter("ignore", RuntimeWarning)
                     ci = np.nanpercentile(np.array(boots), [2.5, 97.5], axis=0)
                 rows.append(dict(trace=trace, dimension=dim, group=name, n=int(m.sum()),
-                                 share_absent=float(absent[m].mean()), risk_absent=float(y[m & absent].mean()),
-                                 risk_present=float(y[m & ~absent].mean()), difference=float(eff),
+                                 share_absent=float(at[m].mean()), risk_absent=float(yt[m & at].mean()),
+                                 risk_present=float(yt[m & ~at].mean()), difference=float(eff),
                                  difference_ci=ci[:, 0].tolist(), gap=float(eff - other), gap_ci=ci[:, 1].tolist()))
     return rows
+
+
+def scorecard(G: pd.DataFrame, y: np.ndarray, X: pd.DataFrame, presentation: pd.Series, rng,
+              n_boot: int = 300, min_n: int = 20) -> tuple[list[dict], list[dict]]:
+    """Each trace against the three criteria Domino and Shaffer (2025) propose, with no model involved.
+
+    Predictive: at-risk rate without the trace minus with it. (Their validity
+    is about inferring an internal skill, which outcomes alone can't settle;
+    this is the outcome side of it.)
+    Stable across course runs: the same difference inside each presentation.
+    Same meaning across groups: the gaps from `missing_traces`.
+    """
+    y = y.astype(float)
+    pres = presentation.to_numpy()
+    gaps = missing_traces(G, y, X, rng, n_boot=n_boot)
+    rows = []
+    for trace in _available(X, TRACES):
+        skill = TRACES[trace][0]
+        absent, ok = _trace(X, trace)
+        per = []
+        for run in sorted(set(pres)):
+            m = (pres == run) & ok
+            if (m & absent).sum() >= min_n and (m & ~absent).sum() >= min_n:
+                per.append(_absence_effect(y, absent, m))
+        g = [r for r in gaps if r["trace"] == trace]
+        if not g or not per:   # too few students with or without the trace to say anything
+            continue
+        worst = max(g, key=lambda r: abs(r["gap"]))
+        rows.append(dict(trace=trace, skill=skill, applicable=float(ok.mean()), share_absent=float(absent[ok].mean()),
+                         difference=float(_absence_effect(y[ok], absent[ok], np.ones(ok.sum(), bool))),
+                         runs=len(per), runs_total=len(set(pres)), runs_positive=int(sum(d > 0 for d in per)),
+                         run_min=float(min(per)), run_median=float(np.median(per)), run_max=float(max(per)),
+                         worst_group=f"{worst['dimension']}: {worst['group']}", worst_gap=worst["gap"],
+                         worst_gap_ci=worst["gap_ci"], groups=len(g),
+                         groups_with_clear_gap=sum(r["gap_ci"][0] > 0 or r["gap_ci"][1] < 0 for r in g)))
+    return rows, gaps
 
 
 def calibration(G: pd.DataFrame, y: np.ndarray, prob: np.ndarray, rng, n_boot: int = 1000) -> list[dict]:

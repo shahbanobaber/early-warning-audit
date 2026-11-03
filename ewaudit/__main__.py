@@ -22,6 +22,8 @@ def main(argv=None) -> None:
     p.add_argument("--out", type=Path, default=Path("results"))
     p.add_argument("--last-week", type=int, default=20)
     p.add_argument("--budget", type=float, default=0.2, help="share of enrolled students tutors can contact")
+    p.add_argument("--test", default="2014J", choices=["2013J", "2014B", "2014J"],
+                   help="presentation to test on; every earlier one is used for training")
     a = ap.parse_args(argv)
 
     from .data import download, load
@@ -32,7 +34,7 @@ def main(argv=None) -> None:
     from . import plots, report
     from .pipeline import run
 
-    result = run(load(a.raw, a.cache), a.out, weeks=range(0, a.last_week + 1), main_budget=a.budget)
+    result = run(load(a.raw, a.cache, test=a.test), a.out, weeks=range(0, a.last_week + 1), main_budget=a.budget)
     plots.by_week(result, a.out / "by_week.png")
     first = result["audits"][str(result["settings"]["audit_weeks"][0])]
     plots.by_group(first, a.out / "by_group.png")

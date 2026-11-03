@@ -78,3 +78,11 @@ def test_feature_values_on_a_hand_built_student():
     assert X.longest_gap == 28 - 1 - 12                     # days 13..27 inactive
     assert X.active_weeks_frac == 2 / 4                     # weeks 0 and 1 of 0..3
     assert X.assessments_due == 2 and X.missed_frac == 0.5 and X.days_early == 2
+
+
+def test_split_trains_on_the_past_and_sets_the_future_aside():
+    from ewaudit.data import assign_split
+
+    s = pd.DataFrame({"code_presentation": ["2013B", "2013J", "2014B", "2014J"]})
+    assert assign_split(s, "2014B").split.tolist() == ["train", "train", "test", "later"]
+    assert assign_split(s, "2014J").split.tolist() == ["train", "train", "train", "test"]
