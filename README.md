@@ -65,7 +65,7 @@ Every table, with intervals, is in [results/summary.md](results/summary.md).
 pip install -e ".[dev]"
 pytest
 python -m ewaudit download     # OULAD from UCI, about 45 MB
-python -m ewaudit run          # a few minutes on one core; writes results/
+python -m ewaudit run          # about 3 minutes on one core, under 1 GB of memory; writes results/
 ```
 
 ## Limits
