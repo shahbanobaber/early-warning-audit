@@ -28,8 +28,8 @@ The [Open University Learning Analytics Dataset](https://doi.org/10.24432/C5KK69
 - **Features use only the past.** At the end of each week from 0 to 20 the model sees clicks by activity type, recency and regularity, forum and quiz use, submission timing and registration timing, all dated before that point. No demographics or module identity, and no marks except in one comparison. A test changes everything after the cutoff and checks that no feature moves.
 - **Only reachable students count.** Students who have already withdrawn are counted separately, since no warning can reach them.
 - **Train on the past, test on the next run.** Train on 2013B to 2014B, test on 2014J (11,260 students, 5,803 of whom fail or withdraw). The repeat trains on 2013 and tests on 2014B.
-- **Four rankings.** Gradient boosting, logistic regression as a check, an inactivity rule that needs no model, and gradient boosting plus the marks a tutor would have back by that week.
-- **A warning is a contact list.** Each week tutors contact the 20% of enrolled students ranked most at risk. Intervals are 95% bootstrap intervals over students.
+- **Four rankings.** Gradient boosting, logistic regression as a check (both scikit-learn; Pedregosa et al., 2011), an inactivity rule that needs no model, and gradient boosting plus the marks a tutor would have back by that week.
+- **A warning is a contact list.** Each week tutors contact the 20% of enrolled students ranked most at risk. Intervals are 95% bootstrap intervals over students (Efron, 1979).
 
 ## Results
 
@@ -75,11 +75,11 @@ Marks are ranked within each course run, as clicks are. Raw marks made the warni
 
 ### 3. The same share is missed in every group, but the scores flatten real differences
 
-At week 4 the list misses 64% of the at-risk students still enrolled, and every group sits within 3 points of that. In the test year no gap is distinguishable from zero at week 4 or week 8. Precision differs (80% for the most deprived fifth of areas, 63% for the least deprived), as it must when base rates differ and miss rates are equal (Kleinberg et al., 2017).
+At week 4 the list misses 64% of the at-risk students still enrolled, and every group sits within 3 points of that, so it meets equal opportunity (Hardt et al., 2016). In the test year no gap is distinguishable from zero at week 4 or week 8. Precision differs (80% for the most deprived fifth of areas, 63% for the least deprived), as it must when base rates differ and miss rates are equal (Kleinberg et al., 2017).
 
 ![Predicted against observed risk by group](results/calibration.png)
 
-For the most and least deprived fifths of areas the model predicts 47% and 46%, but 48% and 34% actually fail or withdraw. Prior education (46% and 46% predicted, 48% and 33% observed) and disability (49% and 46%, against 53% and 40%) follow the same pattern. As a contact list it works about equally well for everyone. Read as a probability, it is too low for students with a declared disability or without A levels, and about 12 points too high for students from the least deprived areas or with a degree.
+For the most and least deprived fifths of areas the model predicts 47% and 46%, but 48% and 34% actually fail or withdraw. Prior education (46% and 46% predicted, 48% and 33% observed) and disability (49% and 46%, against 53% and 40%) follow the same pattern. As a contact list it works about equally well for everyone. Read as a probability it isn't calibrated within groups. It is too low for students with a declared disability or without A levels, and about 12 points too high for students from the least deprived areas or with a degree.
 
 ### 4. Each trace against the three criteria
 
@@ -103,7 +103,7 @@ In the model's test year (figure above), a quiet week adds 16 points for student
 
 ### 5. Which traces carry the warning
 
-Shuffling one family of traces at week 4 drops AUC by 0.089 for assessment timing and 0.081 for recency and regularity, but only 0.002 for forum and live-tutorial use. Help-seeking is a strong signal on its own (+23 points above) and adds almost nothing once the others are known. AUC ranges from 0.68 to 0.76 across the seven modules.
+Shuffling one family of traces at week 4 (permutation importance; Breiman, 2001) drops AUC by 0.089 for assessment timing and 0.081 for recency and regularity, but only 0.002 for forum and live-tutorial use. Help-seeking is a strong signal on its own (+23 points above) and adds almost nothing once the others are known. AUC ranges from 0.68 to 0.76 across the seven modules.
 
 ### The second year
 
@@ -149,8 +149,13 @@ The explorer in `web/` is a static page (Observable Plot, no build step) deploye
 
 ## References
 
+- Breiman, L. (2001). Random forests. *Machine Learning*, 45(1), 5-32. https://doi.org/10.1023/A:1010933404324
 - Domino, M., & Shaffer, C. A. (2025). Using a wider digital ecosystem to improve self-regulated learning. *Frontiers in Education*, 10. https://doi.org/10.3389/feduc.2025.1487344
-- Kleinberg, J., Mullainathan, S., & Raghavan, M. (2017). Inherent trade-offs in the fair determination of risk scores. *Innovations in Theoretical Computer Science (ITCS)*.
+- Efron, B. (1979). Bootstrap methods: another look at the jackknife. *The Annals of Statistics*, 7(1), 1-26. https://doi.org/10.1214/aos/1176344552
+- Hardt, M., Price, E., & Srebro, N. (2016). Equality of opportunity in supervised learning. *Advances in Neural Information Processing Systems*, 29. arXiv:1610.02413
+- Kleinberg, J., Mullainathan, S., & Raghavan, M. (2017). Inherent trade-offs in the fair determination of risk scores. *Innovations in Theoretical Computer Science (ITCS)*. https://doi.org/10.4230/LIPIcs.ITCS.2017.43
+- Kuzilek, J., Hlosta, M., & Zdrahal, Z. (2015). Open University Learning Analytics dataset [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5KK69
 - Kuzilek, J., Hlosta, M., & Zdrahal, Z. (2017). Open University Learning Analytics dataset. *Scientific Data*, 4, 170171. https://doi.org/10.1038/sdata.2017.171
+- Pedregosa, F., et al. (2011). Scikit-learn: machine learning in Python. *Journal of Machine Learning Research*, 12, 2825-2830.
 
 MIT license.
