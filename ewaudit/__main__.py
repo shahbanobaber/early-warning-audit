@@ -24,7 +24,15 @@ def main(argv=None) -> None:
     p.add_argument("--budget", type=float, default=0.2, help="share of enrolled students tutors can contact")
     p.add_argument("--test", default="2014J", choices=["2013J", "2014B", "2014J"],
                    help="presentation to test on; every earlier one is used for training")
+    p = sub.add_parser("web", help="write web/data.json for the explorer page from both years' results")
+    p.add_argument("--out", type=Path, default=Path("web/data.json"))
     a = ap.parse_args(argv)
+
+    if a.cmd == "web":
+        from .web import export
+
+        print(export([Path("results/metrics.json"), Path("results/replication-2014B/metrics.json")], a.out))
+        return
 
     from .data import download, load
 

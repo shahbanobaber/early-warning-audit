@@ -2,6 +2,8 @@
 
 [![tests](https://github.com/shahbanobaber/early-warning-audit/actions/workflows/tests.yml/badge.svg)](https://github.com/shahbanobaber/early-warning-audit/actions/workflows/tests.yml)
 
+**[Try the interactive explorer](https://early-warning-audit.vercel.app)**
+
 Tests an early-warning model built on learning-platform logs as a decision rather than a score. It asks when a warning can still help, who it misses, and whether each trace means the same thing for every student.
 
 **In short**, from 11,260 students in the test year, repeated on a second year:
@@ -128,7 +130,10 @@ pytest
 python -m ewaudit download                 # OULAD from UCI, about 45 MB
 python -m ewaudit run                      # about 6 minutes on one core, under 1 GB of memory
 python -m ewaudit run --test 2014B --out results/replication-2014B
+python -m ewaudit web                      # web/data.json for the explorer, aggregates only
 ```
+
+The explorer in `web/` is a static page (Observable Plot, no build step) deployed with `npx vercel deploy --prod --cwd web`.
 
 ## Limits
 

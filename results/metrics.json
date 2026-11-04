@@ -9084,6 +9084,48 @@
   }
  },
  "campaigns": {
+  "random": {
+   "week 0": {
+    "rounds": 1,
+    "contacts": 2046,
+    "contacts_share": 0.18170515097690942,
+    "reached": 952,
+    "reached_share": 0.1640530759951749,
+    "precision": 0.46529814271749753
+   },
+   "weeks 0 and 4": {
+    "rounds": 2,
+    "contacts": 3889,
+    "contacts_share": 0.34538188277087034,
+    "reached": 1671,
+    "reached_share": 0.2879545062898501,
+    "precision": 0.42967343790177426
+   },
+   "weeks 0, 4 and 8": {
+    "rounds": 3,
+    "contacts": 5665,
+    "contacts_share": 0.5031083481349912,
+    "reached": 2400,
+    "reached_share": 0.4135791831811132,
+    "precision": 0.4236540158870256
+   },
+   "weeks 0, 4, 8 and 12": {
+    "rounds": 4,
+    "contacts": 7379,
+    "contacts_share": 0.655328596802842,
+    "reached": 3049,
+    "reached_share": 0.5254178872996725,
+    "precision": 0.41319962054478926
+   },
+   "every week to 20": {
+    "rounds": 21,
+    "contacts": 9678,
+    "contacts_share": 0.8595026642984014,
+    "reached": 4221,
+    "reached_share": 0.7273823884197829,
+    "precision": 0.4361438313701178
+   }
+  },
   "boosting": {
    "week 0": {
     "rounds": 1,
@@ -9166,6 +9208,1544 @@
     "reached": 4557,
     "reached_share": 0.7852834740651388,
     "precision": 0.4550629119233074
+   }
+  }
+ },
+ "campaign_grid": {
+  "0.1": {
+   "random": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 458,
+     "reached_share": 0.0789246941237291,
+     "precision": 0.447702834799609
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 2039,
+     "contacts_share": 0.1810834813499112,
+     "reached": 939,
+     "reached_share": 0.16181285541961055,
+     "precision": 0.4605198626777832
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 2972,
+     "contacts_share": 0.26394316163410303,
+     "reached": 1310,
+     "reached_share": 0.2257453041530243,
+     "precision": 0.4407806191117093
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 3901,
+     "contacts_share": 0.3464476021314387,
+     "reached": 1696,
+     "reached_share": 0.29226262278132,
+     "precision": 0.43476031786721353
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 4822,
+     "contacts_share": 0.42824156305506217,
+     "reached": 2053,
+     "reached_share": 0.3537825262795106,
+     "precision": 0.4257569473247615
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 5732,
+     "contacts_share": 0.5090586145648313,
+     "reached": 2420,
+     "reached_share": 0.41702567637428917,
+     "precision": 0.42219120725750175
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 458,
+     "reached_share": 0.0789246941237291,
+     "precision": 0.447702834799609
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 1956,
+     "contacts_share": 0.17371225577264654,
+     "reached": 836,
+     "reached_share": 0.14406341547475443,
+     "precision": 0.4274028629856851
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 2877,
+     "contacts_share": 0.25550621669627,
+     "reached": 1196,
+     "reached_share": 0.20610029295192142,
+     "precision": 0.4157108098713938
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 3781,
+     "contacts_share": 0.33579040852575487,
+     "reached": 1565,
+     "reached_share": 0.2696880923660176,
+     "precision": 0.41391166358106324
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 4669,
+     "contacts_share": 0.4146536412078153,
+     "reached": 1916,
+     "reached_share": 0.3301740479062554,
+     "precision": 0.4103662454487042
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 5539,
+     "contacts_share": 0.4919182948490231,
+     "reached": 2241,
+     "reached_share": 0.3861795622953645,
+     "precision": 0.404585665282542
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 458,
+     "reached_share": 0.0789246941237291,
+     "precision": 0.447702834799609
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 1944,
+     "contacts_share": 0.17264653641207817,
+     "reached": 814,
+     "reached_share": 0.1402722729622609,
+     "precision": 0.41872427983539096
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 2832,
+     "contacts_share": 0.2515097690941385,
+     "reached": 1162,
+     "reached_share": 0.20024125452352232,
+     "precision": 0.4103107344632768
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 3689,
+     "contacts_share": 0.32761989342806397,
+     "reached": 1484,
+     "reached_share": 0.255729794933655,
+     "precision": 0.40227703984819735
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 4521,
+     "contacts_share": 0.40150976909413855,
+     "reached": 1774,
+     "reached_share": 0.3057039462347062,
+     "precision": 0.39239106392391065
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 5332,
+     "contacts_share": 0.47353463587921846,
+     "reached": 2045,
+     "reached_share": 0.3524039290022402,
+     "precision": 0.3835333833458365
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 458,
+     "reached_share": 0.0789246941237291,
+     "precision": 0.447702834799609
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 1911,
+     "contacts_share": 0.1697158081705151,
+     "reached": 798,
+     "reached_share": 0.13751507840772015,
+     "precision": 0.4175824175824176
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 2743,
+     "contacts_share": 0.2436056838365897,
+     "reached": 1082,
+     "reached_share": 0.18645528175081855,
+     "precision": 0.3944586219467736
+    }
+   },
+   "boosting": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 782,
+     "reached_share": 0.13475788385317938,
+     "precision": 0.7644183773216031
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 2039,
+     "contacts_share": 0.1810834813499112,
+     "reached": 1487,
+     "reached_share": 0.2562467689126314,
+     "precision": 0.7292790583619422
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 2972,
+     "contacts_share": 0.26394316163410303,
+     "reached": 2041,
+     "reached_share": 0.351714630363605,
+     "precision": 0.6867429340511441
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 3901,
+     "contacts_share": 0.3464476021314387,
+     "reached": 2525,
+     "reached_share": 0.4351197656384629,
+     "precision": 0.6472699307869777
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 4822,
+     "contacts_share": 0.42824156305506217,
+     "reached": 2992,
+     "reached_share": 0.5155953816991211,
+     "precision": 0.6204894234757362
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 5732,
+     "contacts_share": 0.5090586145648313,
+     "reached": 3369,
+     "reached_share": 0.5805617783904877,
+     "precision": 0.5877529658060014
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 782,
+     "reached_share": 0.13475788385317938,
+     "precision": 0.7644183773216031
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 1956,
+     "contacts_share": 0.17371225577264654,
+     "reached": 1394,
+     "reached_share": 0.24022057556436327,
+     "precision": 0.712678936605317
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 2877,
+     "contacts_share": 0.25550621669627,
+     "reached": 1989,
+     "reached_share": 0.34275374806134756,
+     "precision": 0.6913451511991658
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 3781,
+     "contacts_share": 0.33579040852575487,
+     "reached": 2491,
+     "reached_share": 0.42926072721006375,
+     "precision": 0.658820417878868
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 4669,
+     "contacts_share": 0.4146536412078153,
+     "reached": 2953,
+     "reached_share": 0.5088747199724281,
+     "precision": 0.6324694795459413
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 5539,
+     "contacts_share": 0.4919182948490231,
+     "reached": 3261,
+     "reached_share": 0.5619507151473376,
+     "precision": 0.5887344285972197
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 782,
+     "reached_share": 0.13475788385317938,
+     "precision": 0.7644183773216031
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 1944,
+     "contacts_share": 0.17264653641207817,
+     "reached": 1494,
+     "reached_share": 0.25745304153024295,
+     "precision": 0.7685185185185185
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 2832,
+     "contacts_share": 0.2515097690941385,
+     "reached": 2117,
+     "reached_share": 0.3648113044976736,
+     "precision": 0.7475282485875706
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 3689,
+     "contacts_share": 0.32761989342806397,
+     "reached": 2569,
+     "reached_share": 0.4427020506634499,
+     "precision": 0.6963946869070209
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 4521,
+     "contacts_share": 0.40150976909413855,
+     "reached": 2958,
+     "reached_share": 0.509736343270722,
+     "precision": 0.6542800265428003
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 5332,
+     "contacts_share": 0.47353463587921846,
+     "reached": 3215,
+     "reached_share": 0.5540237808030329,
+     "precision": 0.6029632408102026
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 782,
+     "reached_share": 0.13475788385317938,
+     "precision": 0.7644183773216031
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 1911,
+     "contacts_share": 0.1697158081705151,
+     "reached": 1550,
+     "reached_share": 0.2671032224711356,
+     "precision": 0.8110936682365254
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 2743,
+     "contacts_share": 0.2436056838365897,
+     "reached": 2162,
+     "reached_share": 0.3725659141823195,
+     "precision": 0.7881881152023332
+    }
+   },
+   "marks": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 788,
+     "reached_share": 0.13579183181113216,
+     "precision": 0.7702834799608993
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 2039,
+     "contacts_share": 0.1810834813499112,
+     "reached": 1492,
+     "reached_share": 0.2571083922109254,
+     "precision": 0.7317312408043158
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 2972,
+     "contacts_share": 0.26394316163410303,
+     "reached": 2045,
+     "reached_share": 0.3524039290022402,
+     "precision": 0.6880888290713324
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 3901,
+     "contacts_share": 0.3464476021314387,
+     "reached": 2500,
+     "reached_share": 0.43081164914699294,
+     "precision": 0.6408613176108691
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 4822,
+     "contacts_share": 0.42824156305506217,
+     "reached": 2999,
+     "reached_share": 0.5168016543167328,
+     "precision": 0.6219411032766486
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 5732,
+     "contacts_share": 0.5090586145648313,
+     "reached": 3394,
+     "reached_share": 0.5848698948819576,
+     "precision": 0.5921144452198186
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 788,
+     "reached_share": 0.13579183181113216,
+     "precision": 0.7702834799608993
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 1956,
+     "contacts_share": 0.17371225577264654,
+     "reached": 1386,
+     "reached_share": 0.2388419782870929,
+     "precision": 0.7085889570552147
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 2877,
+     "contacts_share": 0.25550621669627,
+     "reached": 2045,
+     "reached_share": 0.3524039290022402,
+     "precision": 0.710809871393813
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 3781,
+     "contacts_share": 0.33579040852575487,
+     "reached": 2559,
+     "reached_share": 0.44097880406686196,
+     "precision": 0.6768050780216874
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 4669,
+     "contacts_share": 0.4146536412078153,
+     "reached": 3028,
+     "reached_share": 0.5217990694468378,
+     "precision": 0.6485328764189334
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 5539,
+     "contacts_share": 0.4919182948490231,
+     "reached": 3367,
+     "reached_share": 0.5802171290711701,
+     "precision": 0.6078714569416862
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 788,
+     "reached_share": 0.13579183181113216,
+     "precision": 0.7702834799608993
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 1944,
+     "contacts_share": 0.17264653641207817,
+     "reached": 1553,
+     "reached_share": 0.26762019645011204,
+     "precision": 0.7988683127572016
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 2832,
+     "contacts_share": 0.2515097690941385,
+     "reached": 2204,
+     "reached_share": 0.379803549887989,
+     "precision": 0.7782485875706214
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 3689,
+     "contacts_share": 0.32761989342806397,
+     "reached": 2668,
+     "reached_share": 0.4597621919696709,
+     "precision": 0.723231227975061
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 4521,
+     "contacts_share": 0.40150976909413855,
+     "reached": 3056,
+     "reached_share": 0.5266241599172842,
+     "precision": 0.6759566467595665
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 5332,
+     "contacts_share": 0.47353463587921846,
+     "reached": 3310,
+     "reached_share": 0.5703946234706186,
+     "precision": 0.6207801950487621
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 1023,
+     "contacts_share": 0.09085257548845471,
+     "reached": 788,
+     "reached_share": 0.13579183181113216,
+     "precision": 0.7702834799608993
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 1911,
+     "contacts_share": 0.1697158081705151,
+     "reached": 1582,
+     "reached_share": 0.27261761158021713,
+     "precision": 0.8278388278388278
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 2743,
+     "contacts_share": 0.2436056838365897,
+     "reached": 2229,
+     "reached_share": 0.3841116663794589,
+     "precision": 0.8126139263580022
+    }
+   }
+  },
+  "0.2": {
+   "random": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 952,
+     "reached_share": 0.1640530759951749,
+     "precision": 0.46529814271749753
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 4077,
+     "contacts_share": 0.36207815275310834,
+     "reached": 1875,
+     "reached_share": 0.3231087368602447,
+     "precision": 0.459896983075791
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 5944,
+     "contacts_share": 0.5278863232682061,
+     "reached": 2639,
+     "reached_share": 0.45476477683956573,
+     "precision": 0.4439771197846568
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 7802,
+     "contacts_share": 0.6928952042628774,
+     "reached": 3425,
+     "reached_share": 0.5902119593313804,
+     "precision": 0.4389900025634453
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 9645,
+     "contacts_share": 0.8565719360568383,
+     "reached": 4206,
+     "reached_share": 0.7247975185249009,
+     "precision": 0.43608087091757386
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 9673,
+     "contacts_share": 0.8590586145648312,
+     "reached": 4217,
+     "reached_share": 0.7266930897811477,
+     "precision": 0.4359557531272614
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 952,
+     "reached_share": 0.1640530759951749,
+     "precision": 0.46529814271749753
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 3913,
+     "contacts_share": 0.3475133214920071,
+     "reached": 1707,
+     "reached_share": 0.29415819403756677,
+     "precision": 0.43623818042422696
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 5756,
+     "contacts_share": 0.511190053285968,
+     "reached": 2458,
+     "reached_share": 0.42357401344132345,
+     "precision": 0.4270326615705351
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 7564,
+     "contacts_share": 0.6717584369449379,
+     "reached": 3202,
+     "reached_share": 0.5517835602274686,
+     "precision": 0.423320994182972
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 9340,
+     "contacts_share": 0.8294849023090586,
+     "reached": 3894,
+     "reached_share": 0.6710322247113562,
+     "precision": 0.41691648822269806
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 9353,
+     "contacts_share": 0.830639431616341,
+     "reached": 3896,
+     "reached_share": 0.6713768740306738,
+     "precision": 0.4165508393028975
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 952,
+     "reached_share": 0.1640530759951749,
+     "precision": 0.46529814271749753
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 3889,
+     "contacts_share": 0.34538188277087034,
+     "reached": 1671,
+     "reached_share": 0.2879545062898501,
+     "precision": 0.42967343790177426
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 5665,
+     "contacts_share": 0.5031083481349912,
+     "reached": 2400,
+     "reached_share": 0.4135791831811132,
+     "precision": 0.4236540158870256
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 7379,
+     "contacts_share": 0.655328596802842,
+     "reached": 3049,
+     "reached_share": 0.5254178872996725,
+     "precision": 0.41319962054478926
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 9043,
+     "contacts_share": 0.8031083481349911,
+     "reached": 3598,
+     "reached_share": 0.6200241254523522,
+     "precision": 0.39787681079287845
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 9061,
+     "contacts_share": 0.8047069271758437,
+     "reached": 3604,
+     "reached_share": 0.6210580734103051,
+     "precision": 0.3977485928705441
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 952,
+     "reached_share": 0.1640530759951749,
+     "precision": 0.46529814271749753
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 3822,
+     "contacts_share": 0.3394316163410302,
+     "reached": 1658,
+     "reached_share": 0.2857142857142857,
+     "precision": 0.43380429094714806
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 5486,
+     "contacts_share": 0.4872113676731794,
+     "reached": 2241,
+     "reached_share": 0.3861795622953645,
+     "precision": 0.4084943492526431
+    }
+   },
+   "boosting": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1422,
+     "reached_share": 0.2450456660348096,
+     "precision": 0.6950146627565983
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 4077,
+     "contacts_share": 0.36207815275310834,
+     "reached": 2626,
+     "reached_share": 0.4525245562640014,
+     "precision": 0.6441010546970812
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 5944,
+     "contacts_share": 0.5278863232682061,
+     "reached": 3427,
+     "reached_share": 0.5905566086506979,
+     "precision": 0.5765477792732167
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 7802,
+     "contacts_share": 0.6928952042628774,
+     "reached": 4113,
+     "reached_share": 0.7087713251766328,
+     "precision": 0.5271725198667009
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 9645,
+     "contacts_share": 0.8565719360568383,
+     "reached": 4522,
+     "reached_share": 0.7792521109770808,
+     "precision": 0.46884396060134786
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 10020,
+     "contacts_share": 0.8898756660746003,
+     "reached": 4564,
+     "reached_share": 0.7864897466827503,
+     "precision": 0.4554890219560878
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1422,
+     "reached_share": 0.2450456660348096,
+     "precision": 0.6950146627565983
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 3913,
+     "contacts_share": 0.3475133214920071,
+     "reached": 2478,
+     "reached_share": 0.4270205066344994,
+     "precision": 0.6332737030411449
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 5756,
+     "contacts_share": 0.511190053285968,
+     "reached": 3339,
+     "reached_share": 0.5753920386007237,
+     "precision": 0.580090340514246
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 7564,
+     "contacts_share": 0.6717584369449379,
+     "reached": 3930,
+     "reached_share": 0.6772359124590729,
+     "precision": 0.5195663670015864
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 9340,
+     "contacts_share": 0.8294849023090586,
+     "reached": 4261,
+     "reached_share": 0.7342753748061348,
+     "precision": 0.4562098501070664
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 9745,
+     "contacts_share": 0.8654529307282416,
+     "reached": 4288,
+     "reached_share": 0.7389281406169222,
+     "precision": 0.4400205233453053
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1422,
+     "reached_share": 0.2450456660348096,
+     "precision": 0.6950146627565983
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 3889,
+     "contacts_share": 0.34538188277087034,
+     "reached": 2558,
+     "reached_share": 0.4408064794072032,
+     "precision": 0.6577526356389818
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 5665,
+     "contacts_share": 0.5031083481349912,
+     "reached": 3407,
+     "reached_share": 0.587110115457522,
+     "precision": 0.6014121800529567
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 7379,
+     "contacts_share": 0.655328596802842,
+     "reached": 3853,
+     "reached_share": 0.6639669136653455,
+     "precision": 0.5221574739124543
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 9043,
+     "contacts_share": 0.8031083481349911,
+     "reached": 4079,
+     "reached_share": 0.7029122867482337,
+     "precision": 0.451067123742121
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 9558,
+     "contacts_share": 0.8488454706927175,
+     "reached": 4101,
+     "reached_share": 0.7067034292607272,
+     "precision": 0.4290646578782172
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1422,
+     "reached_share": 0.2450456660348096,
+     "precision": 0.6950146627565983
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 3822,
+     "contacts_share": 0.3394316163410302,
+     "reached": 2651,
+     "reached_share": 0.4568326727554713,
+     "precision": 0.6936159079016222
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 5486,
+     "contacts_share": 0.4872113676731794,
+     "reached": 3316,
+     "reached_share": 0.5714285714285714,
+     "precision": 0.6044476850164054
+    }
+   },
+   "marks": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1428,
+     "reached_share": 0.24607961399276237,
+     "precision": 0.6979472140762464
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 4077,
+     "contacts_share": 0.36207815275310834,
+     "reached": 2620,
+     "reached_share": 0.4514906083060486,
+     "precision": 0.6426293843512386
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 5944,
+     "contacts_share": 0.5278863232682061,
+     "reached": 3419,
+     "reached_share": 0.5891780113734275,
+     "precision": 0.5752018842530283
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 7802,
+     "contacts_share": 0.6928952042628774,
+     "reached": 4113,
+     "reached_share": 0.7087713251766328,
+     "precision": 0.5271725198667009
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 9645,
+     "contacts_share": 0.8565719360568383,
+     "reached": 4520,
+     "reached_share": 0.7789074616577633,
+     "precision": 0.46863659927423534
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 10009,
+     "contacts_share": 0.888898756660746,
+     "reached": 4553,
+     "reached_share": 0.7845941754265036,
+     "precision": 0.45489059846138474
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1428,
+     "reached_share": 0.24607961399276237,
+     "precision": 0.6979472140762464
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 3913,
+     "contacts_share": 0.3475133214920071,
+     "reached": 2483,
+     "reached_share": 0.4278821299327934,
+     "precision": 0.6345514950166113
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 5756,
+     "contacts_share": 0.511190053285968,
+     "reached": 3365,
+     "reached_share": 0.5798724797518525,
+     "precision": 0.5846073662265462
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 7564,
+     "contacts_share": 0.6717584369449379,
+     "reached": 3967,
+     "reached_share": 0.6836119248664484,
+     "precision": 0.5244579587519831
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 9340,
+     "contacts_share": 0.8294849023090586,
+     "reached": 4254,
+     "reached_share": 0.7330691021885232,
+     "precision": 0.45546038543897216
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 9734,
+     "contacts_share": 0.8644760213143872,
+     "reached": 4277,
+     "reached_share": 0.7370325693606755,
+     "precision": 0.4393877131703308
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1428,
+     "reached_share": 0.24607961399276237,
+     "precision": 0.6979472140762464
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 3889,
+     "contacts_share": 0.34538188277087034,
+     "reached": 2619,
+     "reached_share": 0.4513182836463898,
+     "precision": 0.673437901774235
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 5665,
+     "contacts_share": 0.5031083481349912,
+     "reached": 3471,
+     "reached_share": 0.598138893675685,
+     "precision": 0.6127096204766108
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 7379,
+     "contacts_share": 0.655328596802842,
+     "reached": 3912,
+     "reached_share": 0.6741340685852145,
+     "precision": 0.5301531372814745
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 9043,
+     "contacts_share": 0.8031083481349911,
+     "reached": 4083,
+     "reached_share": 0.7036015853868689,
+     "precision": 0.45150945482693794
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 9550,
+     "contacts_share": 0.8481349911190054,
+     "reached": 4093,
+     "reached_share": 0.7053248319834569,
+     "precision": 0.42858638743455496
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 2046,
+     "contacts_share": 0.18170515097690942,
+     "reached": 1428,
+     "reached_share": 0.24607961399276237,
+     "precision": 0.6979472140762464
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 3822,
+     "contacts_share": 0.3394316163410302,
+     "reached": 2713,
+     "reached_share": 0.46751680165431675,
+     "precision": 0.7098377812663527
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 5486,
+     "contacts_share": 0.4872113676731794,
+     "reached": 3415,
+     "reached_share": 0.5884887127347923,
+     "precision": 0.6224936201239519
+    }
+   }
+  },
+  "0.3": {
+   "random": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 1442,
+     "reached_share": 0.24849215922798554,
+     "precision": 0.46970684039087945
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 6117,
+     "contacts_share": 0.5432504440497335,
+     "reached": 2829,
+     "reached_share": 0.4875064621747372,
+     "precision": 0.4624816086316822
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 8917,
+     "contacts_share": 0.7919182948490231,
+     "reached": 4028,
+     "reached_share": 0.694123729105635,
+     "precision": 0.451721430974543
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 9891,
+     "contacts_share": 0.8784191829484902,
+     "reached": 4436,
+     "reached_share": 0.7644321902464243,
+     "precision": 0.4484885249216459
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 9893,
+     "contacts_share": 0.8785968028419183,
+     "reached": 4437,
+     "reached_share": 0.764604514906083,
+     "precision": 0.4484989386434853
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 9893,
+     "contacts_share": 0.8785968028419183,
+     "reached": 4437,
+     "reached_share": 0.764604514906083,
+     "precision": 0.4484989386434853
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 1442,
+     "reached_share": 0.24849215922798554,
+     "precision": 0.46970684039087945
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 5870,
+     "contacts_share": 0.5213143872113677,
+     "reached": 2577,
+     "reached_share": 0.44408064794072033,
+     "precision": 0.43901192504258946
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 8634,
+     "contacts_share": 0.7667850799289521,
+     "reached": 3731,
+     "reached_share": 0.6429433051869723,
+     "precision": 0.4321287931433866
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 9568,
+     "contacts_share": 0.849733570159858,
+     "reached": 4112,
+     "reached_share": 0.708599000516974,
+     "precision": 0.4297658862876254
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 9569,
+     "contacts_share": 0.849822380106572,
+     "reached": 4112,
+     "reached_share": 0.708599000516974,
+     "precision": 0.42972097397847214
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 9569,
+     "contacts_share": 0.849822380106572,
+     "reached": 4112,
+     "reached_share": 0.708599000516974,
+     "precision": 0.42972097397847214
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 1442,
+     "reached_share": 0.24849215922798554,
+     "precision": 0.46970684039087945
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 5834,
+     "contacts_share": 0.5181172291296625,
+     "reached": 2558,
+     "reached_share": 0.4408064794072032,
+     "precision": 0.4384641755227974
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 8498,
+     "contacts_share": 0.7547069271758436,
+     "reached": 3613,
+     "reached_share": 0.6226089953472342,
+     "precision": 0.42515886090844907
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 9395,
+     "contacts_share": 0.8343694493783304,
+     "reached": 3938,
+     "reached_share": 0.6786145097363433,
+     "precision": 0.41915912719531667
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 9396,
+     "contacts_share": 0.8344582593250444,
+     "reached": 3939,
+     "reached_share": 0.6787868343960021,
+     "precision": 0.41922094508301405
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 9396,
+     "contacts_share": 0.8344582593250444,
+     "reached": 3939,
+     "reached_share": 0.6787868343960021,
+     "precision": 0.41922094508301405
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 1442,
+     "reached_share": 0.24849215922798554,
+     "precision": 0.46970684039087945
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 5734,
+     "contacts_share": 0.5092362344582593,
+     "reached": 2489,
+     "reached_share": 0.42891607789074615,
+     "precision": 0.4340774328566446
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 8230,
+     "contacts_share": 0.7309058614564832,
+     "reached": 3336,
+     "reached_share": 0.5748750646217474,
+     "precision": 0.40534629404617256
+    }
+   },
+   "boosting": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2004,
+     "reached_share": 0.34533861795622955,
+     "precision": 0.6527687296416939
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 6117,
+     "contacts_share": 0.5432504440497335,
+     "reached": 3540,
+     "reached_share": 0.610029295192142,
+     "precision": 0.5787150564001962
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 8917,
+     "contacts_share": 0.7919182948490231,
+     "reached": 4441,
+     "reached_share": 0.7652938135447183,
+     "precision": 0.4980374565436806
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 10141,
+     "contacts_share": 0.9006216696269982,
+     "reached": 4686,
+     "reached_share": 0.8075133551611235,
+     "precision": 0.4620846070407258
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 10143,
+     "contacts_share": 0.9007992895204263,
+     "reached": 4687,
+     "reached_share": 0.8076856798207823,
+     "precision": 0.46209208321009565
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 10143,
+     "contacts_share": 0.9007992895204263,
+     "reached": 4687,
+     "reached_share": 0.8076856798207823,
+     "precision": 0.46209208321009565
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2004,
+     "reached_share": 0.34533861795622955,
+     "precision": 0.6527687296416939
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 5870,
+     "contacts_share": 0.5213143872113677,
+     "reached": 3352,
+     "reached_share": 0.5776322591762881,
+     "precision": 0.5710391822827938
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 8634,
+     "contacts_share": 0.7667850799289521,
+     "reached": 4277,
+     "reached_share": 0.7370325693606755,
+     "precision": 0.49536715311558954
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 9915,
+     "contacts_share": 0.8805506216696269,
+     "reached": 4459,
+     "reached_share": 0.7683956574185766,
+     "precision": 0.4497226424609178
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 9916,
+     "contacts_share": 0.8806394316163411,
+     "reached": 4459,
+     "reached_share": 0.7683956574185766,
+     "precision": 0.44967728922952804
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 9916,
+     "contacts_share": 0.8806394316163411,
+     "reached": 4459,
+     "reached_share": 0.7683956574185766,
+     "precision": 0.44967728922952804
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2004,
+     "reached_share": 0.34533861795622955,
+     "precision": 0.6527687296416939
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 5834,
+     "contacts_share": 0.5181172291296625,
+     "reached": 3431,
+     "reached_share": 0.5912459072893331,
+     "precision": 0.588104216660953
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 8498,
+     "contacts_share": 0.7547069271758436,
+     "reached": 4214,
+     "reached_share": 0.7261761158021713,
+     "precision": 0.4958813838550247
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 9810,
+     "contacts_share": 0.8712255772646537,
+     "reached": 4353,
+     "reached_share": 0.7501292434947441,
+     "precision": 0.4437308868501529
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 9811,
+     "contacts_share": 0.8713143872113677,
+     "reached": 4354,
+     "reached_share": 0.7503015681544029,
+     "precision": 0.44378758536336765
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 9811,
+     "contacts_share": 0.8713143872113677,
+     "reached": 4354,
+     "reached_share": 0.7503015681544029,
+     "precision": 0.44378758536336765
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2004,
+     "reached_share": 0.34533861795622955,
+     "precision": 0.6527687296416939
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 5734,
+     "contacts_share": 0.5092362344582593,
+     "reached": 3455,
+     "reached_share": 0.5953816991211442,
+     "precision": 0.6025462155563307
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 8230,
+     "contacts_share": 0.7309058614564832,
+     "reached": 4012,
+     "reached_share": 0.6913665345510943,
+     "precision": 0.4874848116646416
+    }
+   },
+   "marks": {
+    "1x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2011,
+     "reached_share": 0.34654489057384114,
+     "precision": 0.6550488599348534
+    },
+    "1x2": {
+     "rounds": 2,
+     "contacts": 6117,
+     "contacts_share": 0.5432504440497335,
+     "reached": 3554,
+     "reached_share": 0.6124418404273652,
+     "precision": 0.5810037600130783
+    },
+    "1x3": {
+     "rounds": 3,
+     "contacts": 8917,
+     "contacts_share": 0.7919182948490231,
+     "reached": 4432,
+     "reached_share": 0.7637428916077891,
+     "precision": 0.49702814848043064
+    },
+    "1x4": {
+     "rounds": 4,
+     "contacts": 10146,
+     "contacts_share": 0.9010657193605683,
+     "reached": 4691,
+     "reached_share": 0.8083749784594175,
+     "precision": 0.46234969446087126
+    },
+    "1x5": {
+     "rounds": 5,
+     "contacts": 10148,
+     "contacts_share": 0.9012433392539965,
+     "reached": 4692,
+     "reached_share": 0.8085473031190763,
+     "precision": 0.4623571147024044
+    },
+    "1x6": {
+     "rounds": 6,
+     "contacts": 10148,
+     "contacts_share": 0.9012433392539965,
+     "reached": 4692,
+     "reached_share": 0.8085473031190763,
+     "precision": 0.4623571147024044
+    },
+    "2x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2011,
+     "reached_share": 0.34654489057384114,
+     "precision": 0.6550488599348534
+    },
+    "2x2": {
+     "rounds": 2,
+     "contacts": 5870,
+     "contacts_share": 0.5213143872113677,
+     "reached": 3350,
+     "reached_share": 0.5772876098569706,
+     "precision": 0.5706984667802385
+    },
+    "2x3": {
+     "rounds": 3,
+     "contacts": 8634,
+     "contacts_share": 0.7667850799289521,
+     "reached": 4273,
+     "reached_share": 0.7363432707220403,
+     "precision": 0.4949038684271485
+    },
+    "2x4": {
+     "rounds": 4,
+     "contacts": 9911,
+     "contacts_share": 0.8801953818827709,
+     "reached": 4455,
+     "reached_share": 0.7677063587799414,
+     "precision": 0.44950055493895674
+    },
+    "2x5": {
+     "rounds": 5,
+     "contacts": 9912,
+     "contacts_share": 0.8802841918294849,
+     "reached": 4455,
+     "reached_share": 0.7677063587799414,
+     "precision": 0.449455205811138
+    },
+    "2x6": {
+     "rounds": 6,
+     "contacts": 9912,
+     "contacts_share": 0.8802841918294849,
+     "reached": 4455,
+     "reached_share": 0.7677063587799414,
+     "precision": 0.449455205811138
+    },
+    "4x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2011,
+     "reached_share": 0.34654489057384114,
+     "precision": 0.6550488599348534
+    },
+    "4x2": {
+     "rounds": 2,
+     "contacts": 5834,
+     "contacts_share": 0.5181172291296625,
+     "reached": 3458,
+     "reached_share": 0.5958986731001207,
+     "precision": 0.5927322591703805
+    },
+    "4x3": {
+     "rounds": 3,
+     "contacts": 8498,
+     "contacts_share": 0.7547069271758436,
+     "reached": 4250,
+     "reached_share": 0.732379803549888,
+     "precision": 0.5001176747469993
+    },
+    "4x4": {
+     "rounds": 4,
+     "contacts": 9805,
+     "contacts_share": 0.8707815275310835,
+     "reached": 4348,
+     "reached_share": 0.7492676201964501,
+     "precision": 0.44344722080571136
+    },
+    "4x5": {
+     "rounds": 5,
+     "contacts": 9806,
+     "contacts_share": 0.8708703374777975,
+     "reached": 4349,
+     "reached_share": 0.7494399448561089,
+     "precision": 0.44350397715684275
+    },
+    "4x6": {
+     "rounds": 6,
+     "contacts": 9806,
+     "contacts_share": 0.8708703374777975,
+     "reached": 4349,
+     "reached_share": 0.7494399448561089,
+     "precision": 0.44350397715684275
+    },
+    "8x1": {
+     "rounds": 1,
+     "contacts": 3070,
+     "contacts_share": 0.27264653641207814,
+     "reached": 2011,
+     "reached_share": 0.34654489057384114,
+     "precision": 0.6550488599348534
+    },
+    "8x2": {
+     "rounds": 2,
+     "contacts": 5734,
+     "contacts_share": 0.5092362344582593,
+     "reached": 3495,
+     "reached_share": 0.6022746855074961,
+     "precision": 0.6095221485873735
+    },
+    "8x3": {
+     "rounds": 3,
+     "contacts": 8230,
+     "contacts_share": 0.7309058614564832,
+     "reached": 4041,
+     "reached_share": 0.6963639496811994,
+     "precision": 0.4910085054678007
+    }
    }
   }
  }

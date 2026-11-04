@@ -109,6 +109,7 @@ def run(data: Data, out: Path, weeks=range(0, 21), budgets=(0.1, 0.2, 0.3), main
     eventual = int(cohort.at_risk.sum())
     G = audit.groups(s)
     by_week, audits, ranked = [], {}, {}
+    rand = np.random.default_rng(seed + 1)   # its own stream, so the other intervals don't move
     for w in weeks:
         pop = population(s, w)
         pop = pop[pop.split.isin(["train", "test"])]
@@ -124,6 +125,8 @@ def run(data: Data, out: Path, weeks=range(0, 21), budgets=(0.1, 0.2, 0.3), main
                    with_a_mark=float((XM.loc[te, "marks_available"] > 0).mean()) if "marks_available" in XM else 0.0)
         res = pop.final_result[te].to_numpy()
         fitted, flags = {}, {}
+        # Baseline for the contact schedules: the same rounds, picking students at random.
+        ranked.setdefault("random", {})[w] = (pop.index[te].to_numpy(), rand.random(int(te.sum())))
         with threadpool_limits(1):
             for kind in MODELS:
                 Xk = XM if kind == "marks" else X
@@ -177,11 +180,22 @@ def run(data: Data, out: Path, weeks=range(0, 21), budgets=(0.1, 0.2, 0.3), main
     campaigns = {kind: {name: campaign(ranked[kind], sched, main_budget, at_risk)
                         for name, sched in SCHEDULES.items() if all(x in ranked[kind] for x in sched)}
                  for kind in ranked}
+    # Every budget, ranking and "first contact at week 0, then every k weeks, n rounds", for the web explorer.
+    campaign_grid = {}
+    for b in budgets:
+        for kind in ranked:
+            for every in (1, 2, 4, 8):
+                for n in range(1, 7):
+                    sched = [every * i for i in range(n)]
+                    if all(x in ranked[kind] for x in sched):
+                        campaign_grid.setdefault(str(b), {}).setdefault(kind, {})[f"{every}x{n}"] = campaign(
+                            ranked[kind], sched, b, at_risk)
     result = dict(settings=dict(weeks=list(weeks), budgets=list(budgets), main_budget=main_budget, main=MAIN,
                                 audit_weeks=list(audit_weeks), test_presentation=test,
                                 train_presentations=sorted(s.loc[s.split == "train", "code_presentation"].unique()),
                                 seed=seed, marking_lag_days=MARKING_LAG),
-                  by_week=by_week, audits={str(k): v for k, v in audits.items()}, campaigns=campaigns)
+                  by_week=by_week, audits={str(k): v for k, v in audits.items()}, campaigns=campaigns,
+                  campaign_grid=campaign_grid)
     out.mkdir(parents=True, exist_ok=True)
     (out / "metrics.json").write_text(json.dumps(result, indent=1))
     return result
