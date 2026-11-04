@@ -84,3 +84,36 @@ def features(data: Data, week: int, keys: pd.Index | None = None) -> pd.DataFram
         else:
             X[f"{col}_pct"] = np.nan
     return X.astype(float)
+
+
+MARKING_LAG = 14   # days from a tutor-marked assignment's deadline to the mark coming back (an assumption)
+PASS_MARK = 40     # OULAD: "The score lower than 40 is interpreted as Fail."
+
+
+def mark_features(data: Data, week: int, keys: pd.Index, lag: int = MARKING_LAG) -> pd.DataFrame:
+    """Marks a tutor could have seen by the end of `week`, kept apart from the trace features.
+
+    Computer-marked assignments (CMA) count from submission. Tutor-marked ones
+    (TMA) count from `lag` days after the later of deadline and submission.
+    Banked marks, carried over from an earlier attempt, count from the start.
+    OULAD doesn't record when marks were returned, so the lag is an assumption.
+
+    Marks are ranked within each course run, like clicks. Raw marks don't carry
+    across years when a course changes its assessments: BBB's first assignment
+    in 2014J counted for nothing and had a median mark of 100, against 73 in
+    earlier years, and raw marks made the warning worse there.
+    """
+    c = 7 * week
+    sub = data.submissions[data.submissions.key.isin(keys)].merge(
+        data.assessments[["id_assessment", "date", "assessment_type"]], on="id_assessment")
+    ready = np.where(sub.is_banked == 1, -np.inf,
+                     np.where(sub.assessment_type == "CMA", sub.date_submitted,
+                              np.maximum(sub.date, sub.date_submitted) + lag))
+    marks = sub[(ready < c) & sub.score.notna()].groupby("key").score
+    run = data.students.loc[keys, "presentation"]
+    X = pd.DataFrame(index=keys)
+    X["marks_available"] = marks.size().reindex(keys, fill_value=0)
+    X["mean_mark_pct"] = marks.mean().reindex(keys).groupby(run).rank(pct=True)
+    X["lowest_mark_pct"] = marks.min().reindex(keys).groupby(run).rank(pct=True)
+    X["failed_a_mark"] = (marks.min() < PASS_MARK).astype(float).reindex(keys)
+    return X.astype(float)

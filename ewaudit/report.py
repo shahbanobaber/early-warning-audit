@@ -53,6 +53,32 @@ def summary(result: dict, weeks_shown=(0, 2, 4, 6, 8, 10, 12, 16, 20)) -> str:
             "of every student in the cohort who ends up failing or withdrawing, including those already gone. "
             f"Intervals are 95% bootstrap intervals for {MODELS[st['main']]}.", ""]
 
+    out += ["## What returned marks add", "",
+            f"The same model with marks a tutor would have back by each week (tutor-marked work counted "
+            f"{st.get('marking_lag_days', 14)} days after its deadline, ranked within each course run).", "",
+            "| week | students with a mark back | AUC, traces / + marks | precision, traces / + marks "
+            "| recall of future fails, traces / + marks | missed future fails it catches "
+            "| missed withdrawals it catches |",
+            "|---|---|---|---|---|---|---|"]
+    for r in rows:
+        t, m = r["models"][st["main"]], r["models"]["marks"]
+        out.append(f"| {r['week']} | {_pct(r['with_a_mark'])} | {t['auc']:.3f} / {m['auc']:.3f} | "
+                   f"{_pct(t['budgets'][b]['precision'])} / {_pct(m['budgets'][b]['precision'])} | "
+                   f"{_pct(t['recall_by_outcome']['Fail'])} / {_pct(m['recall_by_outcome']['Fail'])} | "
+                   f"{_pct(m['catches_missed']['Fail'])} | {_pct(m['catches_missed']['Withdrawn'])} |")
+    out += ["", "## Contacting more than once", "",
+            f"Each round contacts {_pct(st['main_budget'])} of the students still enrolled, skipping anyone already "
+            "contacted. Reached = distinct students contacted who go on to fail or withdraw, as a share of all of "
+            "them in the cohort.", "",
+            "| rounds at | ranking | reached | students contacted (share of cohort) | contacted who were at risk |",
+            "|---|---|---|---|---|"]
+    for name in result["campaigns"][st["main"]]:
+        for kind in (st["main"], "marks"):
+            c = result["campaigns"][kind][name]
+            out.append(f"| {name} | {MODELS[kind]} | {_pct(c['reached_share'])} | {c['contacts']:,} "
+                       f"({_pct(c['contacts_share'])}) | {_pct(c['precision'])} |")
+    out.append("")
+
     for w, a in result["audits"].items():
         out += [f"## Week {w}: errors by group ({MODELS[st['main']]})", "",
                 "| group | students | at risk | flagged | missed (of at-risk) | gap vs rest | precision "
@@ -64,11 +90,16 @@ def summary(result: dict, weeks_shown=(0, 2, 4, 6, 8, 10, 12, 16, 20)) -> str:
                        f"{_pct(r['miss'])} {_ci(r['miss_ci'])} | {gap} | {_pct(r['precision'])} "
                        f"{_ci(r['precision_ci'])} | {_pct(r['false_alarm'])} |")
         out += ["", f"## Week {w}: what the missed students looked like", "",
+                "Mark columns cover students with at least one mark back by this week "
+                f"(tutor-marked work counted {st.get('marking_lag_days', 14)} days after its deadline).", "",
                 "| students | n | active in the last week | median click percentile | missed a deadline "
-                "| median days early |", "|---|---|---|---|---|---|"]
+                "| median days early | with a mark back | failed a mark | median mark rank |",
+                "|---|---|---|---|---|---|---|---|---|"]
         for name, r in a["missed_profile"].items():
+            marks = (f"{_pct(r['with_a_mark'])} | {_pct(r['failed_a_mark'])} | {_pct(r['median_mark_pct'])}"
+                     if "with_a_mark" in r else "| |")
             out.append(f"| {name} | {r['n']:,} | {_pct(r['active_last_week'])} | {_pct(r['median_clicks_pct'])} | "
-                       f"{_pct(r['missed_a_deadline'])} | {r['median_days_early']:.0f} |")
+                       f"{_pct(r['missed_a_deadline'])} | {r['median_days_early']:.0f} | {marks} |")
         lr = a["subgroups_logistic"]
         worst = max(lr, key=lambda r: abs(r["miss_gap"]))
         out += ["", f"With logistic regression instead, the largest miss-rate gap is {100 * worst['miss_gap']:+.1f} "

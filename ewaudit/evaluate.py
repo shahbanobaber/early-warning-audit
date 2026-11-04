@@ -15,6 +15,7 @@ MODELS = {
     "boosting": "gradient boosting",
     "logistic": "logistic regression",
     "quiet": "inactivity rule",
+    "marks": "gradient boosting + marks",   # traces plus marks returned by the cutoff
 }
 
 
@@ -22,7 +23,7 @@ def fit(kind: str, X: pd.DataFrame, y: pd.Series):
     if kind == "logistic":
         m = make_pipeline(SimpleImputer(strategy="median", add_indicator=True), StandardScaler(),
                           LogisticRegression(max_iter=2000))
-    elif kind == "boosting":
+    elif kind in ("boosting", "marks"):
         m = HistGradientBoostingClassifier(max_iter=300, learning_rate=0.05, l2_regularization=1.0,
                                            early_stopping=False, random_state=0)
     else:

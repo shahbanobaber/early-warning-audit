@@ -15,8 +15,11 @@ from .audit import DIMENSIONS, FIGURE_TRACES  # noqa: E402
 INK, INK2, MUTED = "#0b0b0b", "#52514e", "#8a8984"
 GRID, SURFACE, NULL = "#e6e5e1", "#fcfcfb", "#dddcd7"
 BLUE, ORANGE, AQUA = "#2a78d6", "#eb6834", "#1baf7a"
-COLOURS = {"boosting": BLUE, "logistic": AQUA, "quiet": ORANGE}
-LABELS = {"boosting": "gradient boosting", "logistic": "logistic regression", "quiet": "inactivity rule"}
+NAVY = "#104281"
+COLOURS = {"boosting": BLUE, "logistic": AQUA, "quiet": ORANGE, "marks": NAVY}
+LABELS = {"boosting": "gradient boosting", "logistic": "logistic regression", "quiet": "inactivity rule",
+          "marks": "gradient boosting + marks back so far"}
+STYLES = {"marks": (0, (4, 2))}
 
 
 def _style() -> None:
@@ -39,9 +42,9 @@ def by_week(result: dict, path: Path) -> None:
     fig, axes = plt.subplots(3, 1, figsize=(7.2, 8.6), sharex=True)
 
     ax = axes[0]
-    for kind in ("boosting", "logistic", "quiet"):
+    for kind in ("boosting", "marks", "logistic", "quiet"):
         y = [r["models"][kind]["auc"] for r in rows]
-        ax.plot(w, y, color=COLOURS[kind], label=LABELS[kind])
+        ax.plot(w, y, color=COLOURS[kind], label=LABELS[kind], ls=STYLES.get(kind, "-"))
     lo, hi = zip(*[r["models"][main]["ci"]["auc"] for r in rows], strict=True)
     ax.fill_between(w, lo, hi, color=BLUE, alpha=0.15, lw=0)
     ax.set_ylabel("AUC on the next year's cohort")
@@ -49,17 +52,18 @@ def by_week(result: dict, path: Path) -> None:
     ax.legend(loc="upper left", fontsize=8.5)
 
     ax = axes[1]
-    for kind in ("boosting", "quiet"):
+    for kind in ("boosting", "marks", "quiet"):
         ax.plot(w, [r["models"][kind]["budgets"][b]["precision"] for r in rows], color=COLOURS[kind],
-                label=f"{LABELS[kind]}, top {float(b):.0%} flagged")
+                ls=STYLES.get(kind, "-"), label=LABELS[kind])
     lo, hi = zip(*[r["models"][main]["ci"]["precision"] for r in rows], strict=True)
     ax.fill_between(w, lo, hi, color=BLUE, alpha=0.15, lw=0)
     ax.plot(w, [r["base_rate"] for r in rows], color=MUTED, lw=1.5, ls=(0, (3, 2)),
             label="contacting students at random")
     ax.set_ylabel("share of flagged students\nwho go on to fail or withdraw")
-    ax.set_ylim(0.2, 1.0)
+    ax.set_ylim(0.2, 1.14)                       # headroom above the lines for the legend
+    ax.set_yticks(np.arange(0.2, 1.01, 0.1))
     ax.set_title(f"Contacting the top {float(b):.0%}: how many contacts go to students who need it")
-    ax.legend(loc="upper left", fontsize=8.5)
+    ax.legend(loc="upper left", ncol=2, fontsize=8)
 
     ax = axes[2]
     total = rows[0]["eventual_at_risk"]

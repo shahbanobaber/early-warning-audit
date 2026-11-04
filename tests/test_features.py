@@ -86,3 +86,25 @@ def test_split_trains_on_the_past_and_sets_the_future_aside():
     s = pd.DataFrame({"code_presentation": ["2013B", "2013J", "2014B", "2014J"]})
     assert assign_split(s, "2014B").split.tolist() == ["train", "train", "test", "later"]
     assert assign_split(s, "2014J").split.tolist() == ["train", "train", "train", "test"]
+
+
+def test_marks_count_only_once_they_would_be_back():
+    from ewaudit.features import mark_features
+
+    students = pd.DataFrame({"code_module": "AAA", "code_presentation": "2014J", "id_student": [1, 2],
+                             "date_registration": -30.0, "date_unregistration": np.nan, "at_risk": 0,
+                             "presentation": "AAA 2014J"}, index=pd.RangeIndex(2, name="key"))
+    assessments = pd.DataFrame({"code_module": "AAA", "code_presentation": "2014J", "id_assessment": [1, 2],
+                                "assessment_type": ["TMA", "CMA"], "date": [10, 20]})
+    # The TMA is due on day 10 and comes back 14 days later (day 24). The CMA is marked on submission (day 15).
+    sub = pd.DataFrame({"key": [0, 0, 1], "id_assessment": [1, 2, 1], "date_submitted": [8, 15, 9],
+                        "is_banked": 0, "score": [30.0, 80.0, 60.0]})
+    data = Data(students, assessments, sub, pd.DataFrame(columns=["key", "date", "group", "clicks"]))
+    wk3 = mark_features(data, 3, students.index)                    # cutoff day 21: only student 0's CMA is back
+    assert wk3.marks_available.tolist() == [1, 0] and wk3.failed_a_mark[0] == 0 and np.isnan(wk3.mean_mark_pct[1])
+    wk4 = mark_features(data, 4, students.index)                    # cutoff day 28: everything is back
+    assert wk4.marks_available.tolist() == [2, 1] and wk4.failed_a_mark.tolist() == [1, 0]
+    assert wk4.mean_mark_pct.tolist() == [0.5, 1.0]                 # means 55 and 60, ranked within the run
+    # A mark that isn't back yet can change without changing anything.
+    sub2 = sub.assign(score=[99.0, 80.0, 5.0])
+    pd.testing.assert_frame_equal(mark_features(Data(students, assessments, sub2, data.daily), 3, students.index), wk3)

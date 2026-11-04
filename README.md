@@ -1,11 +1,13 @@
 # early-warning-audit
 
+[![tests](https://github.com/shahbanobaber/early-warning-audit/actions/workflows/tests.yml/badge.svg)](https://github.com/shahbanobaber/early-warning-audit/actions/workflows/tests.yml)
+
 Tests an early-warning model built on learning-platform logs as a decision rather than a score. It asks when a warning can still help, who it misses, and whether each trace means the same thing for every student.
 
 **In short**, from 11,260 students in the test year, repeated on a second year:
 
-- **Waiting doesn't help.** One round of warnings reaches about a quarter of the students who will fail or withdraw, whichever week it goes out. Later warnings are more accurate, but by then the students they would catch have left.
-- **The missed students look like students who pass.** At week 4, 80% of the future fails it missed had been active the week before, and 1% had missed a deadline.
+- **Waiting doesn't help, repeating does.** One round of warnings reaches about a quarter of the students who will fail or withdraw, whichever week it goes out, because later warnings arrive after many have left. Three rounds, at weeks 0, 4 and 8, reach 59%.
+- **The missed students look like students who pass.** At week 4, 80% of the future fails it missed had been active the week before, and 1% had missed a deadline. Most were passing their early assignments too, so adding marks catches only about one in eight of them.
 - **The scores flatten real differences.** The model misses the same share of at-risk students in every group, but it predicts nearly the same risk for groups whose actual risk differs by as much as 18 points.
 - **A missing trace is weaker evidence for students who declared a disability.** They are at higher risk even when every trace looks normal.
 
@@ -21,10 +23,10 @@ The [Open University Learning Analytics Dataset](https://doi.org/10.24432/C5KK69
 
 ## How it works
 
-- **Features use only the past.** At the end of each week from 0 to 20 the model sees clicks by activity type, recency and regularity, forum and quiz use, submission timing and registration timing, all dated before that point. No marks, demographics or module identity. A test changes everything after the cutoff and checks that no feature moves.
+- **Features use only the past.** At the end of each week from 0 to 20 the model sees clicks by activity type, recency and regularity, forum and quiz use, submission timing and registration timing, all dated before that point. No demographics or module identity, and no marks except in one comparison. A test changes everything after the cutoff and checks that no feature moves.
 - **Only reachable students count.** Students who have already withdrawn are counted separately, since no warning can reach them.
 - **Train on the past, test on the next run.** Train on 2013B to 2014B, test on 2014J (11,260 students, 5,803 of whom fail or withdraw). The repeat trains on 2013 and tests on 2014B.
-- **Three rankings.** Gradient boosting, logistic regression as a check, and an inactivity rule that needs no model.
+- **Four rankings.** Gradient boosting, logistic regression as a check, an inactivity rule that needs no model, and gradient boosting plus the marks a tutor would have back by that week.
 - **A warning is a contact list.** Each week tutors contact the 20% of enrolled students ranked most at risk. Intervals are 95% bootstrap intervals over students.
 
 ## Results
@@ -42,6 +44,18 @@ The [Open University Learning Analytics Dataset](https://doi.org/10.24432/C5KK69
 
 The warning gets more accurate every week, but the students it would catch keep leaving, a third of them by the end of week 2. One round of contacts reaches 21% to 25% of the eventual fails and withdrawals whatever the week, with a budget of 10% or 30% too. The list made before the course starts does as well as the list at week 20. Logistic regression is within 0.02 AUC of boosting every week, and the inactivity rule trails by 0.01 to 0.09.
 
+Repeating works where waiting doesn't. In the table below each round contacts 20% of the students still enrolled, skipping anyone already contacted.
+
+| Rounds at | At-risk students reached | Students contacted | Contacted who were at risk |
+|---|---|---|---|
+| Week 0 | 25% | 18% of the cohort | 70% |
+| Weeks 0 and 4 | 44% | 35% | 66% |
+| Weeks 0, 4 and 8 | 59% | 50% | 60% |
+| Weeks 0, 4, 8 and 12 | 66% | 66% | 52% |
+| Every week to 20 | 79% | 89% | 46% |
+
+The second round finds at-risk students almost as well as the first (62% of its new contacts, against 70%). By the fourth round, three in four new contacts go to students who will be fine.
+
 ### 2. The students it misses look like students who pass
 
 | At week 4 | Students | Active in the last week | Median click rank in their course | Missed a deadline |
@@ -52,6 +66,10 @@ The warning gets more accurate every week, but the students it would catch keep 
 | Will withdraw later, not flagged | 1,118 | 86% | 50th | 1% |
 
 The traces pick up disengagement, such as going quiet or missing deadlines. The students the list misses were active, on time and mid-pack for clicks. It catches future fails and future withdrawals at similar rates (34% and 37% at week 4). Since the two models land within 0.02 AUC of each other, the limit is in the traces, not the model.
+
+Adding the marks a tutor would have back helps only a little. By week 8, 86% of students have a mark back. AUC rises from 0.78 to 0.80 and precision from 79% to 83%, but the list then catches only 13% of the future fails the click-only list missed (8% in the second year). Most of those students were passing their early work. By week 8, 13% of them had failed a mark, against 10% of students who go on to pass. Their marks sat lower, around the 35th percentile of their course against the 63rd, but not yet below the pass line.
+
+Marks are ranked within each course run, as clicks are. Raw marks made the warning worse in one module. BBB's first assignment in 2014J counted for nothing and its median mark was 100, against 72 to 74 in earlier years, so a model that had learned what a high mark means was misled.
 
 ### 3. The same share is missed in every group, but the scores flatten real differences
 
@@ -97,6 +115,8 @@ The whole analysis was rerun, training on 2013 only and testing on 2014B (7,804 
 | Actual risk, most and least deprived fifth | 48% and 34% | 57% and 39% |
 | Quiet week, disability declared against others | −12 pts [−20, −4] | −5 pts [−13, +4] |
 | Missed deadline, disability declared against others | −10 pts [−18, −2] | −11 pts [−19, −2] |
+| At-risk reached by rounds at weeks 0, 4 and 8 | 59% | 57% |
+| Missed future fails the marks list catches (week 8) | 13% | 8% |
 
 The first three findings hold. The disability result points the same way for all five traces in both years, and its interval clears zero for a missed deadline in both years and for a quiet week in 2014J only. Two of 22 miss-rate comparisons clear zero, by 5 and 6 points. Module CCC, with no earlier run to learn from, has the lowest AUC (0.64 at week 4). Every table is in [results/summary.md](results/summary.md) and [results/replication-2014B/summary.md](results/replication-2014B/summary.md).
 
@@ -106,7 +126,7 @@ The first three findings hold. The disability result points the same way for all
 pip install -e ".[dev]"
 pytest
 python -m ewaudit download                 # OULAD from UCI, about 45 MB
-python -m ewaudit run                      # about 5 minutes on one core, under 1 GB of memory
+python -m ewaudit run                      # about 6 minutes on one core, under 1 GB of memory
 python -m ewaudit run --test 2014B --out results/replication-2014B
 ```
 
@@ -119,6 +139,7 @@ python -m ewaudit run --test 2014B --out results/replication-2014B
 - **The groups are coarse.** Deprivation is measured for the home area, not the student. Disability is self-declared. Small education categories are merged.
 - **Withdrawal mixes reasons.** Some students leave for reasons no tutor contact could change.
 - **The 20% budget is an assumption.** The summary also has 10% and 30%.
+- **So is the marking lag.** OULAD doesn't record when marks came back, so tutor-marked work counts 14 days after its deadline.
 - **Secondary analysis of public, anonymised data.** There was no student contact and no ethics review.
 
 ## References

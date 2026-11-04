@@ -51,7 +51,7 @@ def download(raw: Path) -> Path:
 class Data:
     students: pd.DataFrame      # one row per student-presentation, index = key
     assessments: pd.DataFrame   # TMA and CMA deadlines, exams dropped
-    submissions: pd.DataFrame   # key, id_assessment, date_submitted, is_banked
+    submissions: pd.DataFrame   # key, id_assessment, date_submitted, is_banked, score
     daily: pd.DataFrame         # key, date, group (int code into GROUPS), clicks
 
 
@@ -100,7 +100,8 @@ def load(raw: Path, cache: Path, test: str = TEST_PRESENTATION) -> Data:
     assess = assess[assess.assessment_type != "Exam"].dropna(subset=["date"])
     sub = pd.read_csv(src / "studentAssessment.csv", na_values="?")
     sub = sub.merge(assess[["id_assessment", "code_module", "code_presentation"]], on="id_assessment")
-    sub = sub.merge(students[KEYS].reset_index(), on=KEYS)[["key", "id_assessment", "date_submitted", "is_banked"]]
+    cols = ["key", "id_assessment", "date_submitted", "is_banked", "score"]
+    sub = sub.merge(students[KEYS].reset_index(), on=KEYS)[cols]
     cache.mkdir(parents=True, exist_ok=True)
     path = cache / "daily.pkl"
     if path.exists():
