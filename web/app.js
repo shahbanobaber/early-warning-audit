@@ -5,7 +5,9 @@ const S = { year: "2014J", kind: "boosting", budget: "0.2", week: 4, every: "4",
             trace: "no activity in the last week" };
 const TRACES = ["no activity in the last week", "missed an assessment deadline", "never used the forum",
                 "never took a quiz", "no activity before the start"];
-const DIM_LABEL = { deprivation: "Deprivation of home area", disability: "Disability", education: "Prior education" };
+const TRACE_LABEL = { "no activity in the last week": "Quiet week", "missed an assessment deadline": "Missed deadline",
+                      "never used the forum": "No forum", "never took a quiz": "No quiz", "no activity before the start": "Late start" };
+const DIM_LABEL = { deprivation: "Area deprivation", disability: "Disability", education: "Prior education" };
 let DATA = null;
 
 const pct = (x, d = 0) => (x == null || Number.isNaN(x)) ? "–" : `${(100 * x).toFixed(d)}%`;
@@ -37,17 +39,15 @@ function renderReach() {
   const w = Y.weeks[S.week];
   const m = w.models[S.kind];
   const [precision, , reached] = m.b[S.budget];
-  $("week-out").textContent = S.week === 0 ? "0 (before the course starts)" : S.week;
+  $("week-out").textContent = S.week === 0 ? "0 (before the start)" : S.week;
   const items = [
-    [w.n.toLocaleString(), "students still enrolled"],
-    [pct(w.gone), "of the students who will fail or withdraw have already left"],
-    [pct(precision), `of the ${Math.round(+S.budget * w.n).toLocaleString()} students contacted go on to fail or withdraw (random: ${pct(w.base)})`],
-    [pct(reached), "of all the students who will fail or withdraw are reached this week"],
+    [pct(w.gone), "of struggling students already gone"],
+    [pct(precision), "of calls go to someone struggling"],
+    [pct(reached), "of struggling students reached"],
   ];
-  if (S.kind === "marks") items.push([pct(w.mark), "of enrolled students have a mark back"]);
   tiles($("reach-tiles"), items);
 
-  const parts = ["Already withdrawn", "Flagged this week", "Still enrolled, not flagged"];
+  const parts = ["Already gone", "Reached", "Missed"];
   const rows = [], summary = [];
   for (const wk of Y.weeks) {
     const r = wk.models[S.kind].b[S.budget][2];
@@ -58,14 +58,14 @@ function renderReach() {
   const el = $("reach-chart");
   mount(el, Plot.plot({
     width: el.clientWidth, height: 300, marginLeft: 46, style: plotStyle(),
-    x: { label: "End of week →", domain: [0, 20], ticks: 11 },
-    y: { label: `Share of the ${Y.eventual.toLocaleString()} who fail or withdraw`, domain: [0, 1], tickFormat: "%", grid: true },
+    x: { label: "Week →", domain: [0, 20], ticks: 11 },
+    y: { label: "↑ Struggling students", domain: [0, 1], tickFormat: "%", grid: true },
     color: { domain: parts, range: [css("--gone"), css("--blue"), css("--peach")], legend: true },
     marks: [
       Plot.areaY(rows, Plot.stackY({ x: "week", y: "v", fill: "part", order: parts })),
       Plot.ruleX([S.week], { stroke: css("--ink"), strokeWidth: 1.5 }),
       Plot.tip(summary, Plot.pointerX({ x: "week", y: d => d.gone + d.reached,
-        title: d => `Week ${d.week}\nAlready withdrawn ${pct(d.gone)}\nFlagged this week ${pct(d.reached)}\nNot flagged ${pct(d.missed)}\nAUC ${d.auc.toFixed(2)}` })),
+        title: d => `Week ${d.week}\nAlready gone ${pct(d.gone)}\nReached ${pct(d.reached)}\nMissed ${pct(d.missed)}` })),
     ],
   }));
 }
@@ -82,17 +82,15 @@ function renderCampaign() {
   slider.max = max;
   if (S.rounds > max) S.rounds = max;
   slider.value = S.rounds;
-  $("rounds-out").textContent = S.rounds;
+  const wk = Array.from({ length: S.rounds }, (_, i) => i * every);
+  $("rounds-out").textContent = `${S.rounds} (week ${wk.join(", ")})`;
   const [reached, contacted, precision] = grid[`${every}x${S.rounds}`];
   const random = Y.grid[S.budget].random;
   const [rReached] = random[`${every}x${S.rounds}`];
-  const weeks = Array.from({ length: S.rounds }, (_, i) => i * every);
-  const listed = weeks.length === 1 ? `week ${weeks[0]}` : `weeks ${weeks.slice(0, -1).join(", ")} and ${weeks.at(-1)}`;
   tiles($("campaign-tiles"), [
-    [pct(reached), `of the students who will fail or withdraw are reached (contacts at ${listed})`],
-    [pct(contacted), `of the ${Y.cohort.toLocaleString()} students are contacted at least once`],
-    [pct(precision), "of the students contacted needed it"],
-    [pct(rReached), "reached by the same rounds with students picked at random"],
+    [pct(reached), "of struggling students reached"],
+    [pct(rReached), "if tutors called at random"],
+    [pct(contacted), "of all students called"],
   ]);
 
   const shades = { 1: css("--seq1"), 2: css("--seq2"), 4: css("--seq3"), 8: css("--seq4") };
@@ -110,16 +108,16 @@ function renderCampaign() {
   const el = $("campaign-chart");
   mount(el, Plot.plot({
     width: el.clientWidth, height: 300, marginLeft: 46, style: plotStyle(),
-    x: { label: "Students contacted, share of the cohort →", domain: [0, 1], tickFormat: "%", grid: true },
-    y: { label: "↑ Students who fail or withdraw, reached", domain: [0, 1], tickFormat: "%", grid: true },
+    x: { label: "Students called →", domain: [0, 1], tickFormat: "%", grid: true },
+    y: { label: "↑ Struggling students reached", domain: [0, 1], tickFormat: "%", grid: true },
     color: { domain: ["every week", "every 2 weeks", "every 4 weeks", "every 8 weeks"],
              range: [shades[1], shades[2], shades[4], shades[8]], legend: true },
     marks: [
       Plot.line(rand, { x: "contacted", y: "reached", stroke: css("--muted"), strokeDasharray: "3,3" }),
-      Plot.text([rand[Math.floor(rand.length / 3)]], { x: "contacted", y: "reached", text: () => "students picked at random", fill: css("--muted"), dy: 16, dx: 6, textAnchor: "start" }),
+      Plot.text([rand[Math.floor(rand.length / 3)]], { x: "contacted", y: "reached", text: () => "random", fill: css("--muted"), dy: 16, dx: 6, textAnchor: "start" }),
       Plot.line(pts_, { x: "contacted", y: "reached", stroke: "label", z: "label", strokeWidth: 2 }),
       Plot.dot(pts_, { x: "contacted", y: "reached", fill: "label", r: 4, stroke: css("--bg"),
-        tip: true, title: d => `${d.label}, ${d.n} round${d.n > 1 ? "s" : ""}\nReached ${pct(d.reached)}\nContacted ${pct(d.contacted)}\nNeeded it ${pct(d.precision)}` }),
+        tip: true, title: d => `${d.label}, ${d.n} round${d.n > 1 ? "s" : ""}\nReached ${pct(d.reached)}\nCalled ${pct(d.contacted)}` }),
       Plot.dot([sel], { x: "contacted", y: "reached", r: 9, stroke: css("--ink"), strokeWidth: 2, fill: "none" }),
     ],
   }));
@@ -129,20 +127,19 @@ function renderCampaign() {
 function renderProfile() {
   const prof = DATA.years[S.year].audits[S.auditWeek].profile;
   const rows = [
-    ["passed", "Went on to pass", ""],
-    ["at risk, flagged", "At risk, flagged", ""],
-    ["failed, not flagged", "Will fail, not flagged", "missed"],
-    ["withdrew later, not flagged", "Will withdraw later, not flagged", "missed"],
+    ["passed", "Passed", ""],
+    ["at risk, flagged", "Flagged", ""],
+    ["failed, not flagged", "Missed, will fail", "missed"],
+    ["withdrew later, not flagged", "Missed, will drop out", "missed"],
   ];
-  const cols = [["active_last_week", "Active last week"], ["median_clicks_pct", "Median click rank in course"],
-                ["missed_a_deadline", "Missed a deadline"], ["failed_a_mark", "Failed a mark (of those with one back)"]];
+  const cols = [["active_last_week", "Active last week"], ["missed_a_deadline", "Missed a deadline"],
+                ["failed_a_mark", "Failed a mark"]];
   const bar = v => `<div class="bar"><span style="width:${(100 * (v ?? 0)).toFixed(1)}%"></span><em>${pct(v)}</em></div>`;
   const body = rows.map(([k, name, cls]) => {
     const r = prof[k];
-    return `<tr class="${cls}"><td>${name}<br><span class="note">${r.n.toLocaleString()} students</span></td>${cols.map(([c]) => `<td class="num">${bar(r[c])}</td>`).join("")}</tr>`;
+    return `<tr class="${cls}"><td>${name}</td>${cols.map(([c]) => `<td class="num">${bar(r[c])}</td>`).join("")}</tr>`;
   }).join("");
-  $("profile").innerHTML = `<div class="scroll"><table class="profile"><thead><tr><th>At the end of week ${S.auditWeek}</th>${cols.map(([, h]) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>
-    <p class="note">Sections 3 to 5 use the clicks-and-timing warning with a 20% contact list, whatever the settings above. The two "not flagged" rows are the students it misses.</p>`;
+  $("profile").innerHTML = `<div class="scroll"><table class="profile"><thead><tr><th></th>${cols.map(([, h]) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>`;
 }
 
 // ---------- 4. groups ----------
@@ -163,28 +160,25 @@ function renderGroups() {
   const subs = A.subgroups.map(r => ({ ...r, label: groupLabel(r.dimension, r.group) }));
   const first = subs.filter(r => r.dimension === "deprivation");
   const overall = first.reduce((a, r) => a + r.miss * r.n * r.at_risk, 0) / first.reduce((a, r) => a + r.n * r.at_risk, 0);
-  groupPlots($("miss-chart"), subs, (sub, dim, width, margin) => Plot.plot({
-    width, height: 34 * sub.length + 34, marginLeft: margin, style: plotStyle(),
-    x: { domain: [0.4, 0.9], tickFormat: "%", grid: true, label: null },
-    y: { domain: sub.map(r => r.label), label: null },
-    marks: [
-      Plot.ruleX([overall], { stroke: css("--muted"), strokeDasharray: "3,3" }),
-      Plot.link(sub, { x1: d => d.miss_ci[0], x2: d => d.miss_ci[1], y1: "label", y2: "label", stroke: css("--blue"), strokeOpacity: 0.45, strokeWidth: 3 }),
-      Plot.dot(sub, { x: "miss", y: "label", fill: css("--blue"), r: 5, stroke: css("--bg"),
-        tip: true, title: d => `${d.label}\n${pct(d.miss)} of at-risk students missed [${pct(d.miss_ci[0])}, ${pct(d.miss_ci[1])}]\n${d.n.toLocaleString()} students, ${pct(d.at_risk)} at risk` }),
-    ],
-  }));
+  const named = subs.filter(r => r.group !== "unknown");
+  const spread = Math.max(...named.map(r => Math.abs(r.miss - overall)));
+  const poor = A.calibration.find(r => r.group === "0-20%"), rich = A.calibration.find(r => r.group === "80-100%");
+  tiles($("miss-tiles"), [
+    [pct(overall), `of struggling students missed, every group within ${Math.ceil(100 * spread)} points`],
+    [`${pct(rich.observed)} → ${pct(poor.observed)}`, "real risk, richest to poorest areas"],
+    [`${pct(rich.predicted)} → ${pct(poor.predicted)}`, "what the warning predicts"],
+  ]);
   const cal = A.calibration.filter(r => r.dimension !== "all").map(r => ({ ...r, label: groupLabel(r.dimension, r.group) }));
   groupPlots($("calib-chart"), cal, (sub, dim, width, margin) => Plot.plot({
     width, height: 34 * sub.length + 34, marginLeft: margin, style: plotStyle(),
     x: { domain: [0.25, 0.65], tickFormat: "%", grid: true, label: null },
     y: { domain: sub.map(r => r.label), label: null },
-    color: { domain: ["predicted", "actual"], range: [css("--blue"), css("--orange")], legend: dim === "deprivation" },
+    color: { domain: ["predicted", "real"], range: [css("--blue"), css("--orange")], legend: dim === "deprivation" },
     marks: [
       Plot.link(sub, { x1: "predicted", x2: "observed", y1: "label", y2: "label", stroke: css("--gone"), strokeWidth: 4 }),
       Plot.dot(sub, { x: "predicted", y: "label", fill: () => "predicted", r: 5, stroke: css("--bg") }),
-      Plot.dot(sub, { x: "observed", y: "label", fill: () => "actual", r: 5, stroke: css("--bg"),
-        tip: true, title: d => `${d.label}\nPredicted ${pct(d.predicted)}\nActually failed or withdrew ${pct(d.observed)}` }),
+      Plot.dot(sub, { x: "observed", y: "label", fill: () => "real", r: 5, stroke: css("--bg"),
+        tip: true, title: d => `${d.label}\nPredicted ${pct(d.predicted)}\nReal ${pct(d.observed)}` }),
     ],
   }));
 }
@@ -192,21 +186,19 @@ function renderGroups() {
 // ---------- 5. missing traces ----------
 function renderTraces() {
   const A = DATA.years[S.year].audits[S.auditWeek];
-  const rows = A.traces.filter(t => t.trace === S.trace).map(t => ({ ...t, label: groupLabel(t.dimension, t.group) }));
-  const card = A.scorecard.find(c => c.trace === S.trace);
+  const rows = A.traces.filter(t => t.trace === S.trace && t.dimension === "disability")
+    .map(t => ({ ...t, label: groupLabel(t.dimension, t.group) }));
   const dis = rows.find(r => r.dimension === "disability" && r.group === "declared");
-  let note = "";
-  if (card) note += `Across all ${S.year === "2014J" ? 22 : 15} course runs, students without this trace are ${pts(card.difference)} points more likely to fail or withdraw (${pts(card.run_min)} to ${pts(card.run_max)} inside individual runs). `;
-  if (dis) note += `In the test year it adds ${pts(dis.difference)} points for students who declared a disability, ${pts(-dis.gap)} points ${dis.gap < 0 ? "less" : "more"} than for everyone else [${pts(-dis.gap_ci[1])}, ${pts(-dis.gap_ci[0])}].`;
-  $("trace-note").textContent = note;
+  $("trace-note").textContent = dis
+    ? `Extra risk: ${pts(dis.difference)} points with a declared disability, ${pts(dis.difference - dis.gap)} for everyone else.` : "";
   groupPlots($("trace-chart"), rows, (sub, dim, width, margin) => Plot.plot({
     width, height: 34 * sub.length + 46, marginLeft: margin, style: plotStyle(),
-    x: { domain: [0, 0.6], tickFormat: d => `+${Math.round(100 * d)}`, grid: true, label: "Extra risk, percentage points →" },
+    x: { domain: [0, 0.6], tickFormat: d => `+${Math.round(100 * d)}`, grid: true, label: "Extra risk, points →" },
     y: { domain: sub.map(r => r.label), label: null },
     marks: [
       Plot.link(sub, { x1: d => d.difference_ci[0], x2: d => d.difference_ci[1], y1: "label", y2: "label", stroke: css("--orange"), strokeOpacity: 0.45, strokeWidth: 3 }),
       Plot.dot(sub, { x: "difference", y: "label", fill: css("--orange"), r: 5, stroke: css("--bg"),
-        tip: true, title: d => `${d.label}\nWithout the trace ${pct(d.risk_absent)} fail or withdraw, with it ${pct(d.risk_present)}\n${pct(d.share_absent)} of the group lack it` }),
+        tip: true, title: d => `${d.label}\nWithout it ${pct(d.risk_absent)} struggle\nWith it ${pct(d.risk_present)}` }),
     ],
   }));
 }
@@ -222,7 +214,7 @@ function setPressed() {
 
 function init() {
   const traceSeg = document.querySelector('.seg[data-key="trace"]');
-  traceSeg.innerHTML = TRACES.map(t => `<button data-value="${t}">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`).join("");
+  traceSeg.innerHTML = TRACES.map(t => `<button data-value="${t}">${TRACE_LABEL[t]}</button>`).join("");
   document.querySelectorAll(".seg").forEach(seg => seg.addEventListener("click", e => {
     const b = e.target.closest("button");
     if (!b) return;

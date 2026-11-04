@@ -4,61 +4,50 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Early-warning audit</title>
-<meta name="description" content="An interactive audit of a student early-warning model: when a warning can still help, who it misses, and whether each trace means the same thing for every student.">
+<meta name="description" content="Does a student early-warning system reach struggling students in time, and who does it miss?">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@observablehq/plot@0.6.16/dist/plot.umd.min.js"></script>
 </head>
 <body>
 <header class="wrap">
-  <p class="eyebrow">Learning analytics · evaluation</p>
   <h1>Early-warning audit</h1>
-  <p class="lede">Universities increasingly use platform logs to warn students who are falling behind. This page tests one such warning as a decision rather than a score: when it can still help, who it misses, and whether a missing trace means the same thing for every student.</p>
-  <p class="meta">Data from 32,593 students on seven Open University courses, 2013–2014. The model trains on earlier course runs and is tested on the next one. Every number below comes from that test.</p>
+  <p class="lede">Universities flag struggling students from their online activity. Does the warning reach them in time, and who does it miss?</p>
+  <p class="meta">32,593 real students · Open University · trained on past years, tested on the next</p>
 </header>
 
-<nav class="controls wrap" aria-label="Settings that apply to every section">
+<nav class="controls wrap" aria-label="Settings">
   <div class="control">
-    <span class="label">Test year</span>
-    <div class="seg" data-key="year">
-      <button data-value="2014J">2014 Oct</button><button data-value="2014B">2014 Feb</button>
-    </div>
+    <span class="label">Year</span>
+    <div class="seg" data-key="year"><button data-value="2014J">Oct 2014</button><button data-value="2014B">Feb 2014</button></div>
   </div>
   <div class="control">
-    <span class="label">The warning reads</span>
-    <div class="seg" data-key="kind">
-      <button data-value="boosting">Clicks and timing</button><button data-value="marks">+ marks returned</button>
-    </div>
+    <span class="label">Warning uses</span>
+    <div class="seg" data-key="kind"><button data-value="boosting">Clicks</button><button data-value="marks">Clicks + marks</button></div>
   </div>
   <div class="control">
-    <span class="label">Tutors can contact</span>
-    <div class="seg" data-key="budget">
-      <button data-value="0.1">10%</button><button data-value="0.2">20%</button><button data-value="0.3">30%</button>
-    </div>
+    <span class="label">Tutors can call</span>
+    <div class="seg" data-key="budget"><button data-value="0.1">10%</button><button data-value="0.2">20%</button><button data-value="0.3">30%</button></div>
   </div>
 </nav>
 
 <main class="wrap">
   <section>
-    <h2>1. A later warning is more accurate, but reaches no more students</h2>
-    <p>Each week the warning ranks the students still enrolled, and tutors contact the top of the list. Drag the week. Accuracy climbs, but the students it would catch keep leaving.</p>
+    <h2>Waiting doesn't help</h2>
     <div class="slider">
-      <label for="week">End of week <output id="week-out">4</output></label>
+      <label for="week">Week <output id="week-out">4</output></label>
       <input type="range" id="week" min="0" max="20" step="1" value="4">
     </div>
     <div class="tiles" id="reach-tiles"></div>
-    <div class="chart" id="reach-chart" role="img" aria-label="Share of eventual fails and withdrawals already gone, flagged this week, or missed, by week"></div>
+    <div class="chart" id="reach-chart" role="img" aria-label="Students who will fail or drop out: already gone, reached, or missed, by week"></div>
   </section>
 
   <section>
-    <h2>2. Contacting again works where waiting doesn't</h2>
-    <p>Start at week 0 and repeat. Each round contacts the same share of the students still enrolled, skipping anyone already contacted.</p>
+    <h2>Calling again does</h2>
     <div class="row">
       <div class="control">
-        <span class="label">Repeat every</span>
-        <div class="seg" data-key="every">
-          <button data-value="1">week</button><button data-value="2">2 weeks</button><button data-value="4">4 weeks</button><button data-value="8">8 weeks</button>
-        </div>
+        <span class="label">Call again every</span>
+        <div class="seg" data-key="every"><button data-value="1">week</button><button data-value="2">2 weeks</button><button data-value="4">4 weeks</button><button data-value="8">8 weeks</button></div>
       </div>
       <div class="slider grow">
         <label for="rounds">Rounds <output id="rounds-out">3</output></label>
@@ -66,59 +55,39 @@
       </div>
     </div>
     <div class="tiles" id="campaign-tiles"></div>
-    <div class="chart" id="campaign-chart" role="img" aria-label="Students reached against students contacted for every schedule"></div>
+    <div class="chart" id="campaign-chart" role="img" aria-label="Students reached against students called, for every schedule"></div>
   </section>
 
   <section>
-    <h2>3. The students it misses look like students who pass</h2>
-    <p>The traces pick up disengagement: going quiet, missing deadlines. Students who stay busy and still fail look like everyone else.</p>
+    <h2>It misses students who look fine</h2>
     <div class="control">
-      <span class="label">At the end of week</span>
-      <div class="seg" data-key="auditWeek"><button data-value="4">4</button><button data-value="8">8</button></div>
+      <div class="seg" data-key="auditWeek"><button data-value="4">Week 4</button><button data-value="8">Week 8</button></div>
     </div>
     <div id="profile"></div>
   </section>
 
   <section>
-    <h2>4. Equal misses, but the scores flatten real differences</h2>
-    <p>The warning misses about the same share of at-risk students in every group. Its risk scores, though, barely move between groups whose real risk differs a lot. The model never sees group membership.</p>
-    <div class="pair">
-      <div>
-        <h3>At-risk students not flagged</h3>
-        <div id="miss-chart" class="chart" role="img" aria-label="Miss rate by group with 95% intervals"></div>
-      </div>
-      <div>
-        <h3>Predicted risk and what happened</h3>
-        <div id="calib-chart" class="chart" role="img" aria-label="Mean predicted risk and observed fail or withdraw rate by group"></div>
-      </div>
-    </div>
+    <h2>Equal misses, wrong risk numbers</h2>
+    <div class="tiles" id="miss-tiles"></div>
+    <h3>Predicted vs real risk</h3>
+    <div id="calib-chart" class="chart" role="img" aria-label="Predicted and real risk by group"></div>
   </section>
 
   <section>
-    <h2>5. A missing trace means less for some students</h2>
-    <p>How much does the absence of a trace raise the chance of failing or withdrawing? For students who declared a disability, every trace is weaker evidence, because their risk is high even when the trace is there.</p>
+    <h2>Going quiet means less for some</h2>
     <div class="control">
-      <span class="label">Trace absent</span>
       <div class="seg wrapbtns" data-key="trace"></div>
     </div>
     <p class="note" id="trace-note"></p>
-    <div id="trace-chart" class="chart" role="img" aria-label="Extra risk when the trace is absent, by group, with 95% intervals"></div>
-  </section>
-
-  <section class="about">
-    <h2>How it was made</h2>
-    <ul>
-      <li><strong>Features use only the past.</strong> Each week the model sees clicks, recency, regularity, forum and quiz use, and submission timing dated before that point. A test checks that nothing later leaks in.</li>
-      <li><strong>Only reachable students count.</strong> Students who have already withdrawn are counted as out of reach, not scored.</li>
-      <li><strong>Train on the past, test on the next run.</strong> Gradient boosting, checked against logistic regression and a no-model inactivity rule. Marks count only once a tutor would have them back (14 days after the deadline, an assumption).</li>
-      <li><strong>Repeated on a second year.</strong> Trained on 2013 only, tested on February 2014. Switch the test year above.</li>
-    </ul>
-    <p>Data: Open University Learning Analytics Dataset (Kuzilek, Hlosta and Zdrahal, 2017), CC BY 4.0. Framing: Domino and Shaffer (2025), who propose judging traces on validity, reliability and equitability. Methods: equal opportunity (Hardt et al., 2016), calibration and its trade-off with equal error rates (Kleinberg et al., 2017), bootstrap intervals (Efron, 1979), permutation importance (Breiman, 2001). This page shows only aggregate results; no student-level data is included.</p>
-    <p class="links"><a href="https://github.com/shahbanobaber/early-warning-audit">Code, tests and full results on GitHub</a></p>
+    <div id="trace-chart" class="chart" role="img" aria-label="Extra risk when a trace is missing, by group"></div>
   </section>
 </main>
 
-<footer class="wrap">Built by Shahbano Baber.</footer>
+<footer class="wrap">
+  Data: <a href="https://doi.org/10.24432/C5KK69">Open University Learning Analytics Dataset</a> (CC BY 4.0) ·
+  <a href="https://github.com/shahbanobaber/early-warning-audit">Method, tests and references</a> ·
+  Shahbano Baber
+</footer>
 <script src="app.js"></script>
 </body>
 </html>
